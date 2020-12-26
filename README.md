@@ -15,6 +15,12 @@ Then run:
 
 `npm start` which starts at port 3000.
 
+# A Glimpse of UI
+
+Note I really want just a one page for this one web app.
+
+![capture](Capture.png)
+
 # Contribution
 
 Please see open issues for a specific issue, and do not hesitate to open any new issue (like better code, readability, modularity and best practice, performance, better UI or even functionality enhancements...).

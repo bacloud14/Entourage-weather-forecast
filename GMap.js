@@ -35,7 +35,22 @@ function initMap() {
         }(map))
         google.maps.event.trigger(map, 'resize');
     }
-
+    const styles = {
+        default: [],
+        hide: [
+          {
+            featureType: "poi.business",
+            stylers: [{ visibility: "off" }],
+          },
+          {
+            featureType: "transit",
+            elementType: "labels.icon",
+            stylers: [{ visibility: "off" }],
+          },
+        ],
+      };
+      
+    map.setOptions({ styles: styles["hide"] });
     if (currentList && currentList["features"] && currentList.features.length > 0) {
         map.data.addGeoJson(currentList);
         markers = getMarkers();
@@ -217,7 +232,7 @@ function renderForecastDays(dailies) {
         d.setUTCSeconds(period.dt);
         var ISODate = d.toISOString().slice(0, 10);
         const dayName = weekdayNames[d.getDay()]; // new Date(period.dateTimeISO).getDay()
-        const iconSrc = `http://openweathermap.org/img/wn/${period.weather[0].icon || 'na'}.png`;
+        const iconSrc = `http://openweathermap.org/img/wn/${period.weather[0].icon || 'na'}@4x.png`;
         const maxTempF = period.temp.max || 'N/A';
         const minTempF = period.temp.min || 'N/A';
         const weather = period.weather[0].description || 'N/A';

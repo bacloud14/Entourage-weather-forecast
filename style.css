@@ -105,7 +105,7 @@
 
       .wrapper{
           margin-top:10px;
-          border:solid 1px red;
+          border:solid 1px rgb(0, 0, 0);
           position :relative;
           width: 100%;
           margin: 0px auto;
@@ -116,7 +116,7 @@
         position : absolute;
         top:0;
         right:0;
-        background: orange;
+        background: rgb(235, 243, 216);
         width: 50%;    
         height: 80%;
       }

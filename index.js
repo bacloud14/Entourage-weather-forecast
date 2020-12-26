@@ -35,7 +35,7 @@ app.get('/nearby/:city', (req, res) => {
     var cities = nearbyCities(query).slice(0, 10);
     var actions = cities.map(formatCity)
     Promise.all(actions).then(function (weathers) {
-        console.log(weathers[0].daily)
+        // console.log(weathers[0].daily)
         var result = formatCities(cities, weathers)
         return res.status(200).send({
             error: false,
