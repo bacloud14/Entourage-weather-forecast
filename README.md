@@ -19,7 +19,7 @@ Then run:
 
 Note I really want just a one page for this one web app.
 
-![capture](Capture.png)
+![capture](Capture.PNG)
 
 # Contribution
 
