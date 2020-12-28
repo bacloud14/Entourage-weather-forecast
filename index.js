@@ -11,6 +11,31 @@ const app = express();
 
 const port = 3000;
 
+
+const fs = require('fs');
+let rawdata = fs.readFileSync('city.list.min.json');
+let citiesIds = JSON.parse(rawdata);
+
+function getCityId(coord) {
+    // return undefined;
+    toPrecision = x => Number.parseFloat(x).toPrecision(3)
+    coord.lon = toPrecision(coord.lon);
+    coord.lat = toPrecision(coord.lat);
+    onecity = citiesIds.filter((item) => {
+        lon = toPrecision(item.coord.lon);
+        lat = toPrecision(item.coord.lat);
+        return lon == coord.lon && lat == coord.lat;
+    })[0]
+    if (onecity) {
+        console.log("getCityId called: \n city name is: " + onecity.name);
+        return onecity.id;
+
+    } else {
+        console.log("getCityId called: \n city not found :(");
+        return undefined;
+    }
+}
+// getCityId()
 // make a connection to the local instance of redis
 // const client = redis.createClient(6379);
 
@@ -90,6 +115,7 @@ function formatCities(cities, weathers) {
     };
     cities.forEach(function (city, index) {
         var feature = {
+            "cityid": getCityId({lon:city["lon"], lat:city["lat"]}),
             "geometry": {
                 "type": "Point",
                 "coordinates": [city["lon"], city["lat"]]
@@ -114,7 +140,7 @@ function formatCities(cities, weathers) {
 
 async function formatCity(city) {
     return new Promise(async (resolve, reject) => {
-        API_Url = 'https://api.openweathermap.org/data/2.5/onecall?lat='+city["lat"]+'&lon='+city["lon"]+'&exclude=hourly,minutely,hourly&units=metric&appid=YOUR_OPENWEATHERMAP_API_KEY';
+        API_Url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + city["lat"] + '&lon=' + city["lon"] + '&exclude=hourly,minutely,hourly&units=metric&appid=YOUR_OPENWEATHERMAP_API_KEY';
         const body = await axios.get(API_Url);
         const data = await body.data;
         resolve(data);

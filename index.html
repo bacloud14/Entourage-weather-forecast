@@ -10,7 +10,6 @@
     src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLEMAPS_API_KEY&callback=initMap&libraries=places&v=weekly"
     defer></script>
   <link rel="stylesheet" type="text/css" href="./style.css" />
-
 </head>
 
 <body>
@@ -27,10 +26,20 @@
     <strong>Place ID:</strong> <span id="place-id"></span><br />
     <span id="place-address"></span>
   </div>
-  <a href="hometown">Hometown climate</a>
-
-
-
+  <div id="links">
+    <a href="hometown">Hometown climate</a>
+  </div>
+  <script>
+    // todo: a link to the openweathermap widget for the searched city.
+    // if (currentList) {
+    //   var a = document.createElement('a');
+    //   var linkText = document.createTextNode("Openweathermap widget");
+    //   a.appendChild(linkText);
+    //   a.title = "Openweathermap widget";
+    //   a.href = "openweatherwidget.html?cityid=" + currentList.features[0].cityid;
+    //   document.getElementById("links").appendChild(a);
+    // }
+  </script>
   <div class="container" id="forecast-body">
     <h3 class="display-6" id="location"></h3>
     <div class="row" id="forecast-items"></div>

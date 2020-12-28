@@ -38,18 +38,18 @@ function initMap() {
     const styles = {
         default: [],
         hide: [
-          {
-            featureType: "poi.business",
-            stylers: [{ visibility: "off" }],
-          },
-          {
-            featureType: "transit",
-            elementType: "labels.icon",
-            stylers: [{ visibility: "off" }],
-          },
+            {
+                featureType: "poi.business",
+                stylers: [{ visibility: "off" }],
+            },
+            {
+                featureType: "transit",
+                elementType: "labels.icon",
+                stylers: [{ visibility: "off" }],
+            },
         ],
-      };
-      
+    };
+
     map.setOptions({ styles: styles["hide"] });
     if (currentList && currentList["features"] && currentList.features.length > 0) {
         map.data.addGeoJson(currentList);
@@ -161,6 +161,7 @@ function nearbyRequest(place) {
         document.getElementById('location').innerHTML = currentList.features[0].properties.name;
         renderForecastDays(currentList.weather[0].daily);
         initMap();
+        generateWidgetLink();
     };
     request.send();
 }
@@ -299,4 +300,15 @@ function clearMarkers() {
 // Shows any markers currently in the array.
 function showMarkers() {
     setMapOnAll(map);
+}
+
+function generateWidgetLink() {
+    if (currentList) {
+        var a = document.createElement('a');
+        var linkText = document.createTextNode("Openweathermap widget");
+        a.appendChild(linkText);
+        a.title = "Openweathermap widget";
+        a.href = "openweatherwidget.html?cityid=" + currentList.features[0].cityid;
+        document.getElementById("links").appendChild(a);
+    }
 }
