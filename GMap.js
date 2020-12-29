@@ -142,7 +142,7 @@ function initMap() {
         infowindow.open(map, marker);
         currentPlace = place;
         console.log("Current place is: " + place)
-
+        getPicture(place.name);
         nearbyRequest(place);
     });
     // Populate current list of cities on a floating HTML panel on the map
@@ -308,5 +308,26 @@ function generateWidgetLink() {
         a.title = "Openweathermap widget";
         a.href = "openweatherwidget.html?cityid=" + currentList.features[0].cityid;
         document.getElementById("links").appendChild(a);
+    }
+}
+
+function getPicture(place){
+    var service = new google.maps.places.PlacesService(map);
+    // Search for Google's office in Australia.
+    var request = {
+        location: map.getCenter(),
+        radius: '500',
+        query: place
+    };
+    service.textSearch(request, callback);
+    // Checks that the PlacesServiceStatus is OK, and adds a marker
+    // using the place ID and location from the PlacesService.
+    function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            if(results[0].photos[0]){
+                document.getElementById("featured_picture").style = "width: 50%; background-size: contain; background-repeat: no-repeat;"
+                document.getElementById("featured_picture").style.backgroundImage = "url('"+results[0].photos[0].getUrl()+"')"; 
+            }
+        }
     }
 }
