@@ -3,26 +3,26 @@
 
 <head>
   <title>Place ID Finder</title>
-  
+
   <div id="openweathermap-widget-11"></div>
   <script src='//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script>
   <script>
     var cityid = window.location.href.split('cityid=')[1]
     window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];
     window.myWidgetParam.push({
-        id: 11,
-        cityid: cityid,
-        appid: 'YOUR_OPENWEATHERMAP_API_KEY',
-        units: 'metric',
-        containerid: 'openweathermap-widget-11',
+      id: 11,
+      cityid: cityid,
+      appid: 'YOUR_OPENWEATHERMAP_API_KEY',
+      units: 'metric',
+      containerid: 'openweathermap-widget-11',
     });
-    function refreshWidget () {
-        var script = document.createElement('script');
-        script.async = true;
-        script.charset = "utf-8";
-        script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(script, s);
+    function refreshWidget() {
+      var script = document.createElement('script');
+      script.async = true;
+      script.charset = "utf-8";
+      script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(script, s);
     };
     refreshWidget();
   </script>

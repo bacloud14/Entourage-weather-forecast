@@ -6,11 +6,13 @@
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 var currentPlace;
-// nearbyRequest("Mila");
 var map;
 var currentList;
 var markers;
+
 function initMap() {
+
+    // Instanciate a map. For first visit, there is no search yet and as a result no center, thus we take the default. (lat: -33.8688,lng: 151.2195)
     center = undefined;
     if (currentList && currentList["features"] && currentList.features.length > 0) {
         coordinates = currentList.features[0].geometry.coordinates;
@@ -35,6 +37,8 @@ function initMap() {
         }(map))
         google.maps.event.trigger(map, 'resize');
     }
+
+    // less styling, setting business positions off and transit off
     const styles = {
         default: [],
         hide: [
@@ -49,8 +53,9 @@ function initMap() {
             },
         ],
     };
-
     map.setOptions({ styles: styles["hide"] });
+
+    // Populate current list of cities nearby on the map
     if (currentList && currentList["features"] && currentList.features.length > 0) {
         map.data.addGeoJson(currentList);
         markers = getMarkers();
@@ -59,6 +64,7 @@ function initMap() {
         map.data.setStyle({
             strokeColor: "blue"
         });
+        // Fit map size to its markers
         var bounds = new google.maps.LatLngBounds();
         map.data.forEach(function (feature) {
             feature.getGeometry().forEachLatLng(function (latlng) {
@@ -69,6 +75,7 @@ function initMap() {
         map.setCenter(center)
     }
     // initMarkers();
+    // Create the autocompletion search bar
     var input = document.getElementById("pac-input");
     if (input == null) {
         let div = document.createElement("INPUT");
@@ -90,6 +97,7 @@ function initMap() {
     const marker = new google.maps.Marker({
         map: map
     });
+    // marker.onclick action: populate the city marker clicked on the HTML cards (renderForecastDays)
     if (markers && markers.length > 0)
         markers.forEach(marker => {
             marker.addListener("click", () => {
@@ -104,14 +112,8 @@ function initMap() {
                 }
             });
         });
-    // marker.addListener("click", () => {
-    //     console.log("marker clicked");
-    //     infowindow.open(map, marker);
-    //     if (currentList && currentList["features"] && currentList.features.length > 0) {
-    //         document.getElementById('location').innerHTML = "blaaaaaaaaaaa"; //currentList.features[0].properties.name;
-    //         renderForecastDays(currentList.weather[0]);
-    //     }
-    // });
+
+    // A possible second search (although not well managed and buggy, now) 
     autocomplete.addListener("place_changed", () => {
         infowindow.close();
         const place = autocomplete.getPlace();
@@ -143,11 +145,12 @@ function initMap() {
 
         nearbyRequest(place);
     });
-
+    // Populate current list of cities on a floating HTML panel on the map
     showplacesList(currentList);
 
 }
 
+// Create an AJAX request for one place this is called once the user search for a city. "nearby/" is the main API in back-end
 function nearbyRequest(place) {
     let request = new XMLHttpRequest();
     requestObject = JSON.stringify({
@@ -166,12 +169,12 @@ function nearbyRequest(place) {
     request.send();
 }
 
+// Creates an HTML panel which is a list of current cities
 function showplacesList( /*data,*/ places) {
     if (!places || places.length == 0) {
         console.log('empty places');
         return;
     }
-
     let panel = document.createElement('ul');
     // If the panel already exists, use it. Else, create it and add to the page.
     if (document.getElementById('panel')) {
@@ -185,7 +188,6 @@ function showplacesList( /*data,*/ places) {
         const body = document.body;
         body.insertBefore(panel, body.childNodes[0]);
     }
-
 
     // Clear the previous details
     while (panel.lastChild) {
@@ -204,15 +206,12 @@ function showplacesList( /*data,*/ places) {
         // distanceText.textContent = place.distanceText;
         // panel.appendChild(distanceText);
     });
-
     // Open the panel
     panel.classList.add('open');
-
     return;
 }
 
-
-
+// Creates and Updates the HTML list of cards which is a list of weather information for one city in a week
 function renderForecastDays(dailies) {
     console.log("renderForecastDays");
     console.log(JSON.stringify(dailies));
@@ -254,6 +253,8 @@ function renderForecastDays(dailies) {
     });
 }
 
+// #getMarkers, #setMapOnAll, #clearMarkers, #showMarkers are helpers to refresh markers. 
+// Detach old features then attach new markers to map
 function getMarkers() {
     coordinates = currentList.features[0].geometry.coordinates;
     center = {
@@ -283,25 +284,22 @@ function getMarkers() {
     });
     return markers;
 }
-
-
 // Sets the map on all markers in the array.
 function setMapOnAll(map) {
     for (let i = 0; i < markers.length; i++) {
         markers[i].setMap(map);
     }
 }
-
 // Removes the markers from the map, but keeps them in the array.
 function clearMarkers() {
     setMapOnAll(null);
 }
-
 // Shows any markers currently in the array.
 function showMarkers() {
     setMapOnAll(map);
 }
 
+// Generates a link with cityid for searched city (not surrounding ones). The link opens "openweatherwidget" which is an openweathermap "widget"
 function generateWidgetLink() {
     if (currentList) {
         var a = document.createElement('a');

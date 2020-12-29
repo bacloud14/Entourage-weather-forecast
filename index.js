@@ -2,7 +2,6 @@ const express = require('express');
 const axios = require('axios');
 const redis = require('redis');
 
-const reverse = require('reverse-geocode');
 const nearbyCities = require("nearby-cities");
 var weather = require('openweather-apis');
 weather.setLang('en');
@@ -35,13 +34,6 @@ function getCityId(coord) {
         return undefined;
     }
 }
-// getCityId()
-// make a connection to the local instance of redis
-// const client = redis.createClient(6379);
-
-// client.on("error", (error) => {
-//  console.error(error);
-// });
 
 app.use(express.static(__dirname + "/"));
 
@@ -69,38 +61,6 @@ app.get('/nearby/:city', (req, res) => {
         });
     });
 
-});
-
-app.get('/recipe/:fooditem', (req, res) => {
-    try {
-        const foodItem = req.params.fooditem;
-
-        // Check the redis store for the data first
-        client.get(foodItem, async (err, recipe) => {
-            if (recipe) {
-                return res.status(200).send({
-                    error: false,
-                    message: `Recipe for ${foodItem} from the cache`,
-                    data: JSON.parse(recipe)
-                })
-            } else { // When the data is not found in the cache then we can make request to the server
-
-                const recipe = await axios.get(`http://www.recipepuppy.com/api/?q=${foodItem}`);
-
-                // save the record in the cache for subsequent request
-                client.setex(foodItem, 1440, JSON.stringify(recipe.data.results));
-
-                // return the result to the client
-                return res.status(200).send({
-                    error: false,
-                    message: `Recipe for ${foodItem} from the server`,
-                    data: recipe.data.results
-                });
-            }
-        })
-    } catch (error) {
-        console.log(error)
-    }
 });
 
 app.listen(port, () => {
@@ -150,3 +110,47 @@ async function formatCity(city) {
 
 
 module.exports = app;
+
+
+
+
+
+// Keeping this example on how to persist requests using Redis for later usage
+// make a connection to the local instance of redis
+// const client = redis.createClient(6379);
+
+// client.on("error", (error) => {
+//  console.error(error);
+// });
+// Keeping this example on how to persist requests using Redis for later usage
+// app.get('/recipe/:fooditem', (req, res) => {
+//     try {
+//         const foodItem = req.params.fooditem;
+
+//         // Check the redis store for the data first
+//         client.get(foodItem, async (err, recipe) => {
+//             if (recipe) {
+//                 return res.status(200).send({
+//                     error: false,
+//                     message: `Recipe for ${foodItem} from the cache`,
+//                     data: JSON.parse(recipe)
+//                 })
+//             } else { // When the data is not found in the cache then we can make request to the server
+
+//                 const recipe = await axios.get(`http://www.recipepuppy.com/api/?q=${foodItem}`);
+
+//                 // save the record in the cache for subsequent request
+//                 client.setex(foodItem, 1440, JSON.stringify(recipe.data.results));
+
+//                 // return the result to the client
+//                 return res.status(200).send({
+//                     error: false,
+//                     message: `Recipe for ${foodItem} from the server`,
+//                     data: recipe.data.results
+//                 });
+//             }
+//         })
+//     } catch (error) {
+//         console.log(error)
+//     }
+// });
