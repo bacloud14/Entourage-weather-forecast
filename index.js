@@ -1,20 +1,36 @@
+// import * as helpers from "./helpers";
+// 0 /////////////////////////////////////////////////////////////////////////////////////
+const dotenv = require('dotenv');
+dotenv.config();
+console.log(`Your port is ${process.env.NODE_PORT}`); // 8626
 const express = require('express');
 const axios = require('axios');
 const redis = require('redis');
-
 const nearbyCities = require("nearby-cities");
 var weather = require('openweather-apis');
 weather.setLang('en');
-
 const app = express();
+const nodePort = process.env.NODE_PORT;
+const redisPort = process.env.REDIS_PORT;
+const OPENWEATHERMAP_API_KEY = process.env.OPENWEATHERMAP_API_KEY;
 
-const port = 3000;
+app.listen(nodePort, () => {
+    console.log(`Server running on port ${nodePort}`);
+});
+app.use(express.static(__dirname + "/"));
+app.get('/hometown/', (req, res) => {
+    res.redirect("/hometown.html");
+});
+// make a connection to the local instance of redis
+const client = redis.createClient(redisPort);
+client.on("error", (error) => {
+    console.error(error);
+});
 
-
+// 1 /////////////////////////////////////////////////////////////////////////////////////
 const fs = require('fs');
 let rawdata = fs.readFileSync('city.list.min.json');
 let citiesIds = JSON.parse(rawdata);
-
 function getCityId(coord) {
     // return undefined;
     toPrecision = x => Number.parseFloat(x).toPrecision(3)
@@ -26,47 +42,65 @@ function getCityId(coord) {
         return lon == coord.lon && lat == coord.lat;
     })[0]
     if (onecity) {
-        console.log("getCityId called: \n city name is: " + onecity.name);
         return onecity.id;
-
     } else {
         console.log("getCityId called: \n city not found :(");
         return undefined;
     }
 }
 
-app.use(express.static(__dirname + "/"));
-
-app.get('/hometown/', (req, res) => {
-    res.redirect("/hometown.html");
-});
-
-
-app.get('/nearby/:city', (req, res) => {
-    var geometry = JSON.parse(req.params.city);
-    const query = {
-        latitude: geometry.lat,
-        longitude: geometry.lng
-    };
-
-    var cities = nearbyCities(query).slice(0, 10);
-    var actions = cities.map(formatCity)
-    Promise.all(actions).then(function (weathers) {
-        // console.log(weathers[0].daily)
-        var result = formatCities(cities, weathers)
-        return res.status(200).send({
-            error: false,
-            message: `Recipe for nearby cities from the server`,
-            data: result
-        });
+// 2 /////////////////////////////////////////////////////////////////////////////////////
+// get data from openweathermap API 
+async function fetchWeather(city) {
+    return new Promise(async (resolve, reject) => {
+        API_Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${city["lat"]}&lon=${city["lon"]}&exclude=hourly,minutely,hourly&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
+        const body = await axios.get(API_Url);
+        const data = await body.data;
+        resolve(data);
     });
 
+}
+
+// 3 /////////////////////////////////////////////////////////////////////////////////////
+app.get('/nearby/:city', (req, res) => {
+    try {
+        var geometry = JSON.parse(req.params.city);
+        var cityname = geometry.cityname;
+        // Check the redis store for the data first
+        client.get(cityname, async (err, result) => {
+            if (result) {
+                return res.status(200).send({
+                    error: false,
+                    message: `Weather data for nearby cities for ${cityname} from the cache`,
+                    data: JSON.parse(result)
+                })
+            } else {
+                const query = {
+                    latitude: geometry.lat,
+                    longitude: geometry.lng
+                };
+                var cities = nearbyCities(query).slice(0, 10);
+                var actions = cities.map(fetchWeather)
+                Promise.all(actions).then(function (weathers) {
+                    // console.log(weathers[0].daily)
+                    var result = formatCities(cities, weathers);
+                    client.setex(cityname, 1440, JSON.stringify(result));
+                    return res.status(200).send({
+                        error: false,
+                        message: `Weather data for nearby cities from the server`,
+                        data: result
+                    });
+                });
+            }
+        });
+
+    } catch (error) {
+        console.log(error)
+    }
+
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});
-
+// 4 /////////////////////////////////////////////////////////////////////////////////////
 function formatCities(cities, weathers) {
     var newVar = {
         "type": "FeatureCollection",
@@ -75,7 +109,7 @@ function formatCities(cities, weathers) {
     };
     cities.forEach(function (city, index) {
         var feature = {
-            "cityid": getCityId({lon:city["lon"], lat:city["lat"]}),
+            "cityid": getCityId({ lon: city["lon"], lat: city["lat"] }),
             "geometry": {
                 "type": "Point",
                 "coordinates": [city["lon"], city["lat"]]
@@ -93,64 +127,9 @@ function formatCities(cities, weathers) {
         newVar.features.push(feature);
         weathers[index]['cityName'] = city.name;
     });
-
+    
     newVar.weather = weathers;
     return newVar;
 }
 
-async function formatCity(city) {
-    return new Promise(async (resolve, reject) => {
-        API_Url = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + city["lat"] + '&lon=' + city["lon"] + '&exclude=hourly,minutely,hourly&units=metric&appid=YOUR_OPENWEATHERMAP_API_KEY';
-        const body = await axios.get(API_Url);
-        const data = await body.data;
-        resolve(data);
-    });
-
-}
-
-
 module.exports = app;
-
-
-
-
-
-// Keeping this example on how to persist requests using Redis for later usage
-// make a connection to the local instance of redis
-// const client = redis.createClient(6379);
-
-// client.on("error", (error) => {
-//  console.error(error);
-// });
-// Keeping this example on how to persist requests using Redis for later usage
-// app.get('/recipe/:fooditem', (req, res) => {
-//     try {
-//         const foodItem = req.params.fooditem;
-
-//         // Check the redis store for the data first
-//         client.get(foodItem, async (err, recipe) => {
-//             if (recipe) {
-//                 return res.status(200).send({
-//                     error: false,
-//                     message: `Recipe for ${foodItem} from the cache`,
-//                     data: JSON.parse(recipe)
-//                 })
-//             } else { // When the data is not found in the cache then we can make request to the server
-
-//                 const recipe = await axios.get(`http://www.recipepuppy.com/api/?q=${foodItem}`);
-
-//                 // save the record in the cache for subsequent request
-//                 client.setex(foodItem, 1440, JSON.stringify(recipe.data.results));
-
-//                 // return the result to the client
-//                 return res.status(200).send({
-//                     error: false,
-//                     message: `Recipe for ${foodItem} from the server`,
-//                     data: recipe.data.results
-//                 });
-//             }
-//         })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// });

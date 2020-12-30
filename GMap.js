@@ -141,7 +141,6 @@ function initMap() {
             place.formatted_address;
         infowindow.open(map, marker);
         currentPlace = place;
-        console.log("Current place is: " + place)
         getPicture(place.name);
         nearbyRequest(place);
     });
@@ -155,7 +154,8 @@ function nearbyRequest(place) {
     let request = new XMLHttpRequest();
     requestObject = JSON.stringify({
         lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
+        lng: place.geometry.location.lng(),
+        cityname: place.name
     });
     request.open('GET', "nearby/" + requestObject);
     request.responseType = 'json';
@@ -213,8 +213,8 @@ function showplacesList( /*data,*/ places) {
 
 // Creates and Updates the HTML list of cards which is a list of weather information for one city in a week
 function renderForecastDays(dailies) {
-    console.log("renderForecastDays");
-    console.log(JSON.stringify(dailies));
+    // console.log("renderForecastDays");
+    // console.log(JSON.stringify(dailies));
     // dailies.reverse();
 
     const weekdayNames = [
