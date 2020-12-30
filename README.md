@@ -2,18 +2,25 @@
 
 SunnySunday is a weather website using Google Maps and Openweathermap data to let people find best places to visit in their entourage; For warmer winter weather vacation or cool summer escapes. 
 
-It is a NodeJs & Express web app with other dependencies (axios, reverse-geocode, nearby-cities, openweather-apis...)
+It is a NodeJs & Express web app with other dependencies (axios, redis, reverse-geocode, nearby-cities, openweather-apis...).
 
 
 # Deployment
 
-Please replace Google Map API with yours, and Openweathermap API as well. Don't forget to set origins in your cloud accounts. Search for YOUR_GOOGLEMAPS_API_KEY and YOUR_OPENWEATHERMAP_API_KEY.
+- Replace Google Map and Openweathermap API keys with yours. Don't forget to set origins in your cloud accounts. Search for YOUR_GOOGLEMAPS_API_KEY and YOUR_OPENWEATHERMAP_API_KEY.
+- Install and run Redis server.
+- Configure .env file with the followings:
+    - NODE_ENV=development
+    - NODE_PORT=####
+    - REDIS_PORT=####
+    - OPENWEATHERMAP_API_KEY=YOUR_OPENWEATHERMAP_API_KEY
+    - GOOGLE_MAPS_API_KEY=YOUR_GOOGLEMAPS_API_KEY
 
 Then run:
 
 `npm install` which installs dependencies.
 
-`npm start` which starts at port 3000.
+`npm start` which starts at port 3000 normally.
 
 # A Glimpse of UI
 
@@ -33,8 +40,8 @@ Please know that I am not a keen NodeJS developer, but I successfully made this 
 
 If you contribute, please consider that I can merge and publish a new release under one channel or another. It will be 100% free although I can add ads to generate some coffee expenses :)
 
-If you want to maintain the project with me, you can alwayse ask.
+If you want to maintain the project with me; You can alwayse ask.
 
-Please keep it fair if you want to deploy anywhere, ask for permission.
+Please keep it fair if you want to deploy anywhere; Ask for permission.
 
 Sweet coding !
