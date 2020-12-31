@@ -1,15 +1,15 @@
 /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-       #map {
-        height: 100%;
-      }
       
       /* Optional: Makes the sample page fill the window. */
       html,
       body {
         height: 100%;
+        width: 100%;
         margin: 0;
         padding: 0;
+        background-color: #eee;
+        background-repeat: repeat; 
       }
       
       .controls {
@@ -66,6 +66,7 @@
       
       .place {
         font-family: 'open sans', arial, sans-serif;
+        position:relative;
         font-size: 1.2em;
         font-weight: 500;
         margin-block-end: 0px;
@@ -103,20 +104,24 @@
         background: #f6f6f6;
       }
 
-      .wrapper{
+      .map_wrapper{
           margin-top:10px;
+          position:relative;
           border:solid 1px rgb(0, 0, 0);
-          position :relative;
-          width: 100%;
+          width: 50%;
           margin: 0px auto;
-          height:1000px;
+          height:50%;
       }
 
       .container {
-        position : absolute;
-        top:0;
-        right:0;
+        position : relative;
         background: rgb(235, 243, 216);
         width: 50%;    
-        height: 80%;
+        height: 70%;
+      }
+
+      #featured_picture {
+        position : relative;
+        width: 50%;    
+        height: 70%;
       }

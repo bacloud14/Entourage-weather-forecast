@@ -4,12 +4,14 @@ const dotenv = require('dotenv');
 dotenv.config();
 console.log(`Your port is ${process.env.NODE_PORT}`); // 8626
 const express = require('express');
+const helmet = require("helmet");
 const axios = require('axios');
 const redis = require('redis');
 const nearbyCities = require("nearby-cities");
 var weather = require('openweather-apis');
 weather.setLang('en');
 const app = express();
+app.use(helmet({contentSecurityPolicy: false}));
 const nodePort = process.env.NODE_PORT;
 const redisPort = process.env.REDIS_PORT;
 const OPENWEATHERMAP_API_KEY = process.env.OPENWEATHERMAP_API_KEY;

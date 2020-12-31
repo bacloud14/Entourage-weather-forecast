@@ -115,6 +115,9 @@ function initMap() {
 
     // A possible second search (although not well managed and buggy, now) 
     autocomplete.addListener("place_changed", () => {
+        markers = getMarkers();
+        if(markers.length > 0)
+            clearMarkers();
         infowindow.close();
         const place = autocomplete.getPlace();
 
@@ -128,6 +131,7 @@ function initMap() {
             map.setCenter(place.geometry.location);
             map.setZoom(13);
         }
+
         // Set the position of the marker using the place ID and location.
         marker.setPlace({
             placeId: place.place_id,
@@ -227,6 +231,7 @@ function renderForecastDays(dailies) {
         'Saturday'
     ];
     document.getElementById('forecast-items').innerHTML = "";
+    document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[0].weather[0].icon || 'na'}.png)`;
     dailies.forEach(period => {
         var d = new Date(0);
         d.setUTCSeconds(period.dt);
@@ -256,6 +261,8 @@ function renderForecastDays(dailies) {
 // #getMarkers, #setMapOnAll, #clearMarkers, #showMarkers are helpers to refresh markers. 
 // Detach old features then attach new markers to map
 function getMarkers() {
+    if(!currentList)
+        return false;
     coordinates = currentList.features[0].geometry.coordinates;
     center = {
         lat: coordinates[1],
@@ -325,7 +332,7 @@ function getPicture(place){
     function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             if(results[0].photos[0]){
-                document.getElementById("featured_picture").style = "width: 50%; background-size: contain; background-repeat: no-repeat;"
+                document.getElementById("featured_picture").style = "background-size: contain; background-repeat: no-repeat;"
                 document.getElementById("featured_picture").style.backgroundImage = "url('"+results[0].photos[0].getUrl()+"')"; 
             }
         }
