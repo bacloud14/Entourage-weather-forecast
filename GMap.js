@@ -149,7 +149,7 @@ function initMap() {
         nearbyRequest(place);
     });
     // Populate current list of cities on a floating HTML panel on the map
-    showplacesList(currentList);
+    // showplacesList(currentList);
 
 }
 
@@ -201,7 +201,7 @@ function showplacesList( /*data,*/ places) {
     places.features.forEach((place) => {
         // Add place details with text formatting
         const name = document.createElement('li');
-        // name.classList.add('place');
+        name.classList.add('place');
         // const currentplace = data.getFeatureById(place.placeid);
         name.textContent = place.properties.name; //currentplace.getProperty('name');
         panel.appendChild(name);
