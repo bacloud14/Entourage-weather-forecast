@@ -12,6 +12,16 @@ var weather = require('openweather-apis');
 weather.setLang('en');
 const app = express();
 app.use(helmet({contentSecurityPolicy: false}));
+const rateLimit = require("express-rate-limit");
+// Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+// see https://expressjs.com/en/guide/behind-proxies.html
+// app.set('trust proxy', 1);
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+//  apply to all requests
+app.use(limiter);
 const nodePort = process.env.NODE_PORT;
 const redisPort = process.env.REDIS_PORT;
 const OPENWEATHERMAP_API_KEY = process.env.OPENWEATHERMAP_API_KEY;
@@ -118,12 +128,12 @@ function formatCities(cities, weathers) {
             },
             "type": "Feature",
             "properties": {
-                "category": "patisserie",
-                "hours": "10am - 6pm",
-                "description": "Modern twists on classic pastries. We're part of a larger chain of patisseries and cafes.",
+                "category": "Town",
+                "hours": "--",
+                "description": "--",
                 "name": city.name,
-                "phone": "+44 20 1234 5678",
-                "storeid": "01"
+                "phone": "--",
+                "storeid": "--"
             }
         };
         newVar.features.push(feature);
