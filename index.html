@@ -43,11 +43,39 @@
           <a class="nav-link disabled" href="#">Version 2</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Disclaimer</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="#">Contact us</a>
         </li>
       </ul>
     </div>
   </nav>
+
+    <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">A "no responsibility" disclaimer</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          No warranties whatsoever! The service can go down without any alert. We take no responsibility for anything beyond our control.
+          The website can hit using limits for services like Openweathermap.org and Google maps and goes off. Please note also that this website relies fully on data provided by other weather services like Openweathermap.org.
+          This means, the forecast can be inaccurate or incomplete. The website can be buggy including UI rendering and data consistency.
+          The service does not gather or use any individual information in any way. The only cache is "searched cities" for faster responses; Even this cache is not coupled with any user information.
+          Anonymous user visits like number of visits of some page can be gathered for better experience.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <! this block can float in code, order doesnt matter>
     <input id="pac-input" class="controls" type="text" placeholder="Enter a location" />
     <div id="infowindow-content">

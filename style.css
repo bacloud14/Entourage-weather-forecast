@@ -1,132 +1,127 @@
-/* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      
-      /* Optional: Makes the sample page fill the window. */
-      html,
-      body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        background-color: #eee;
-        background-repeat: repeat;
-      }
-      
-      .controls {
-        background-color: #fff;
-        border-radius: 2px;
-        border: 1px solid transparent;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        box-sizing: border-box;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        height: 29px;
-        margin-left: 17px;
-        margin-top: 10px;
-        outline: none;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 400px;
-      }
-      
-      .controls:focus {
-        border-color: #4d90fe;
-      }
-      
-      .title {
-        font-weight: bold;
-      }
-      
-      #infowindow-content {
-        display: none;
-      }
-      
-      #map #infowindow-content {
-        display: inline;
-      }
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #eee;
+  background-repeat: repeat;
+}
 
-      #panel {
-        position: relative;
-        top: 10%;
-        left: 0%;
-        z-index: 5;
-        background-color: #fff;
-        padding: 5px;
-        border: 1px solid #999;
-        text-align: center;
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-      }
-      
-      .open {
-        width: 250px;
-      }
-      
-      .place {
-        font-family: 'open sans', arial, sans-serif;
-        position:relative;
-        font-size: 1.2em;
-        font-weight: 500;
-        margin-block-end: 0px;
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-      
-      .distanceText {
-        color: silver;
-        font-family: 'open sans', arial, sans-serif;
-        font-size: 1em;
-        font-weight: 400;
-        margin-block-start: 0.25em;
-        padding-left: 18px;
-        padding-right: 18px;
-      }
+.controls {
+  background-color: #fff;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  height: 29px;
+  margin-left: 17px;
+  margin-top: 10px;
+  outline: none;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 400px;
+}
 
-      ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-       
-      .place li {
-        font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
-        border-bottom: 1px solid #ccc;
-      }
-       
-      .place li:last-child {
-        border: none;
-      }
-       
-      .place li:hover {
-        font-size: 30px;
-        background: #f6f6f6;
-      }
+.controls:focus {
+  border-color: #4d90fe;
+}
 
-      .map_wrapper{
-          margin-top:10px;
-          position:relative;
-          border:solid 1px rgb(0, 0, 0);
-          width: 60%;
-          margin: 0px auto;
-          height:60%;
-      }
+.title {
+  font-weight: bold;
+}
 
-      .container {
-        position : relative;
-        background: rgb(235, 243, 216);
-      }
+#infowindow-content {
+  display: none;
+}
 
-      #featured_picture {
-        margin-top: 5%;
-        width: 100%;    
-        height: 100%;
-        text-align:center;
-      }
+#map #infowindow-content {
+  display: inline;
+}
 
-      #featured_picture h3 {
-        margin:auto;
-        line-height:51px;
-        vertical-align:middle;
-      }
+#panel {
+  position: relative;
+  top: 10%;
+  left: 0%;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: 'Roboto', 'sans-serif';
+  line-height: 30px;
+  padding-left: 10px;
+}
+
+.open {
+  width: 250px;
+}
+
+.place {
+  font-family: 'open sans', arial, sans-serif;
+  position: relative;
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-block-end: 0px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.distanceText {
+  color: silver;
+  font-family: 'open sans', arial, sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  margin-block-start: 0.25em;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.place li {
+  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+}
+
+.place li:last-child {
+  border: none;
+}
+
+.place li:hover {
+  font-size: 30px;
+  background: #f6f6f6;
+}
+
+.map_wrapper {
+  margin-top: 10px;
+  position: relative;
+  border: solid 1px rgb(0, 0, 0);
+  width: 60%;
+  margin: 0px auto;
+  height: 60%;
+}
+
+.container {
+  position: relative;
+  background: rgb(235, 243, 216);
+}
+
+#featured_picture {
+  margin-top: 5%;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+#featured_picture h3 {
+  margin: auto;
+  line-height: 51px;
+  vertical-align: middle;
+}

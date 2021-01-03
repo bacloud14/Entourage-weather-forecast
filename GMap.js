@@ -317,7 +317,6 @@ function generateWidgetLink() {
 
 function getPicture(place) {
     var service = new google.maps.places.PlacesService(map);
-    // Search for Google's office in Australia.
     var request = {
         location: map.getCenter(),
         radius: '500',
