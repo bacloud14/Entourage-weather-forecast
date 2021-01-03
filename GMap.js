@@ -116,7 +116,7 @@ function initMap() {
     // A possible second search (although not well managed and buggy, now) 
     autocomplete.addListener("place_changed", () => {
         markers = getMarkers();
-        if(markers.length > 0)
+        if (markers.length > 0)
             clearMarkers();
         infowindow.close();
         const place = autocomplete.getPlace();
@@ -219,7 +219,7 @@ function showplacesList( /*data,*/ places) {
 function renderForecastDays(dailies) {
     // console.log("renderForecastDays");
     // console.log(JSON.stringify(dailies));
-    // dailies.reverse();
+    dailies.reverse();
 
     const weekdayNames = [
         'Sunday',
@@ -231,8 +231,8 @@ function renderForecastDays(dailies) {
         'Saturday'
     ];
     document.getElementById('forecast-items').innerHTML = "";
-    document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[0].weather[0].icon || 'na'}.png)`;
-    dailies.forEach(period => {
+    document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
+    dailies.forEach(function (period, idx) {
         var d = new Date(0);
         d.setUTCSeconds(period.dt);
         var ISODate = d.toISOString().slice(0, 10);
@@ -241,9 +241,10 @@ function renderForecastDays(dailies) {
         const maxTempF = period.temp.max || 'N/A';
         const minTempF = period.temp.min || 'N/A';
         const weather = period.weather[0].description || 'N/A';
+        const color = (idx == dailies.length - 1) ? "" : "; background-color: rgba(0, 0, 0, 0.2)";
 
         const template = (`
-            <div class="card" style="width: 20%">
+            <div class="card" style="width: 20%${color}">
                 <div class="card-body">
                     <h4 class="card-title text-center">${dayName}</h4>
                     <h5 class="card-title text-center">${ISODate}</h5>
@@ -261,7 +262,7 @@ function renderForecastDays(dailies) {
 // #getMarkers, #setMapOnAll, #clearMarkers, #showMarkers are helpers to refresh markers. 
 // Detach old features then attach new markers to map
 function getMarkers() {
-    if(!currentList)
+    if (!currentList)
         return false;
     coordinates = currentList.features[0].geometry.coordinates;
     center = {
@@ -309,16 +310,12 @@ function showMarkers() {
 // Generates a link with cityid for searched city (not surrounding ones). The link opens "openweatherwidget" which is an openweathermap "widget"
 function generateWidgetLink() {
     if (currentList) {
-        var a = document.createElement('a');
-        var linkText = document.createTextNode("Openweathermap widget");
-        a.appendChild(linkText);
-        a.title = "Openweathermap widget";
-        a.href = "openweatherwidget.html?cityid=" + currentList.features[0].cityid;
-        document.getElementById("links").appendChild(a);
+        document.getElementById("widget").href = "openweatherwidget.html?cityid=" + currentList.features[0].cityid;
+        $("#widget").toggleClass('disabled active')
     }
 }
 
-function getPicture(place){
+function getPicture(place) {
     var service = new google.maps.places.PlacesService(map);
     // Search for Google's office in Australia.
     var request = {
@@ -331,9 +328,10 @@ function getPicture(place){
     // using the place ID and location from the PlacesService.
     function callback(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            if(results[0].photos[0]){
-                document.getElementById("featured_picture").style = "background-size: contain; background-repeat: no-repeat;"
-                document.getElementById("featured_picture").style.backgroundImage = "url('"+results[0].photos[0].getUrl()+"')"; 
+            if (results[0].photos[0]) {
+                document.getElementById("featured_picture").style = "background-size: contain; background-repeat: no-repeat; background-position: center;"
+                document.getElementById("featured_picture").style.backgroundImage = "url('" + results[0].photos[0].getUrl() + "')";
+                // document.getElementById("featured_picture").style.background = "center"; 
             }
         }
     }

@@ -116,12 +116,17 @@
       .container {
         position : relative;
         background: rgb(235, 243, 216);
-        width: 60%;    
-        height: 100%;
       }
 
       #featured_picture {
-        position : relative;
+        margin-top: 5%;
         width: 100%;    
         height: 100%;
+        text-align:center;
+      }
+
+      #featured_picture h3 {
+        margin:auto;
+        line-height:51px;
+        vertical-align:middle;
       }
