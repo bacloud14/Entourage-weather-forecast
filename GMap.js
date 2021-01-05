@@ -370,6 +370,8 @@ function renderForecastDays(dailies) {
     ];
     document.getElementById('forecast-items').innerHTML = "";
     document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
+    var maxTemp = Math.max(... dailies.map((item) => { return item.temp.max; }));
+    console.log(maxTemp);
     dailies.forEach(function (period, idx) {
         var d = new Date(0);
         d.setUTCSeconds(period.dt);
@@ -379,10 +381,11 @@ function renderForecastDays(dailies) {
         const maxTempF = period.temp.max || 'N/A';
         const minTempF = period.temp.min || 'N/A';
         const weather = period.weather[0].description || 'N/A';
-        const color = (idx == dailies.length - 1) ? "" : "; background-color: rgba(0, 0, 0, 0.2)";
-
+        var h = (1.0 - (maxTempF/maxTemp)) * 240;
+        var hueColor = "hsl(" + h + ", 100%, 50%)";
+        var hueColor = "; background-color: "+hueColor;
         const template = (`
-            <div class="card" style="width: 20%${color}">
+            <div class="card" style="width: 20%${hueColor}">
                 <div class="card-body">
                     <h4 class="card-title text-center">${dayName}</h4>
                     <h5 class="card-title text-center">${ISODate}</h5>
