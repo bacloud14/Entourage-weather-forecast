@@ -52,12 +52,8 @@ function initMap() {
                 elementType: "labels.icon",
                 stylers: [{ visibility: "off" }],
             },
-        ]
-    };
-    var d = new Date();
-    var n = d.getHours();
-    if (n > 18 || n < 6) {
-        styles['night'] = [
+        ],
+        night: [
             { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
             { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
             { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
@@ -145,10 +141,24 @@ function initMap() {
                 elementType: "labels.icon",
                 stylers: [{ visibility: "off" }],
             },
-        ];
-    }
-    map.setOptions({ styles: styles["night"] || styles["hide"] });
+        ]
+    };
 
+    // first time visit: map styling if night or regular 
+    var darkThemeSelected = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
+    if (darkThemeSelected)
+        map.setOptions({ styles: styles["night"] });
+    else
+        map.setOptions({ styles: styles["hide"] });
+    
+    // on toggle.
+    google.maps.event.addDomListener(document.getElementById('darkSwitch'), "click", function () {
+        var toggle = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
+        if (!toggle)
+            map.setOptions({ styles: styles["night"] });
+        else
+            map.setOptions({ styles: styles["hide"] });
+    });
     // Populate current list of cities nearby on the map
     if (currentList && currentList["features"] && currentList.features.length > 0) {
         map.data.addGeoJson(currentList);
