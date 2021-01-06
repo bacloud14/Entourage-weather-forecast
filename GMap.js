@@ -370,7 +370,7 @@ function renderForecastDays(dailies) {
     ];
     document.getElementById('forecast-items').innerHTML = "";
     document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
-    var maxTemp = Math.max(... dailies.map((item) => { return item.temp.max; }));
+    var maxTemp = Math.max(...dailies.map((item) => { return item.temp.max; }));
     console.log(maxTemp);
     dailies.forEach(function (period, idx) {
         var d = new Date(0);
@@ -381,9 +381,9 @@ function renderForecastDays(dailies) {
         const maxTempF = period.temp.max || 'N/A';
         const minTempF = period.temp.min || 'N/A';
         const weather = period.weather[0].description || 'N/A';
-        var h = (1.0 - (maxTempF/maxTemp)) * 240;
-        var hueColor = "hsl(" + h + ", 100%, 50%)";
-        var hueColor = "; background-color: "+hueColor;
+        var h = (1.0 - (maxTempF / maxTemp)) * 240;
+        var hueColor = "hsl(" + h + ", 90%, 80%)";
+        var hueColor = "; background-color: " + hueColor;
         const template = (`
             <div class="card" style="width: 20%${hueColor}">
                 <div class="card-body">
@@ -398,6 +398,15 @@ function renderForecastDays(dailies) {
 
         document.getElementById('forecast-items').insertAdjacentHTML('afterbegin', template);
     });
+    const template = (`
+        <div class="card" style="width: 20%">
+            <div class="card-body">
+                <h4 class="card-title text-center">Featured picture</h4>
+                <p>Image bellow should be hidden. on click here should show the image</p>
+            </div>
+        </div>
+    `);
+    document.getElementById('forecast-items').insertAdjacentHTML('beforeend', template);
 }
 
 // #getMarkers, #setMapOnAll, #clearMarkers, #showMarkers are helpers to refresh markers. 
