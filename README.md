@@ -32,6 +32,10 @@ Note I really want just a one page for this one web app.
 
 Please see open issues for a specific issue, and do not hesitate to open any new issue (like better code, readability, modularity and best practice, performance, better UI or even functionality enhancements...).
 
+You can join me on Slack for questions or chat
+ 
+[<img src="https://img.shields.io/badge/slack-join%20us-blueviolet">](bacloud.slack.com) 
+
 Current priority: 
 
 https://github.com/bacloud14/SunnySunday/issues/1
