@@ -150,7 +150,7 @@ function initMap() {
         map.setOptions({ styles: styles["night"] });
     else
         map.setOptions({ styles: styles["hide"] });
-    
+
     // on toggle.
     google.maps.event.addDomListener(document.getElementById('darkSwitch'), "click", function () {
         var toggle = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
@@ -163,6 +163,7 @@ function initMap() {
     if (currentList && currentList["features"] && currentList.features.length > 0) {
         map.data.addGeoJson(currentList);
         markers = getMarkers();
+
         clearMarkers();
         showMarkers();
         map.data.setStyle({
@@ -382,7 +383,7 @@ function renderForecastDays(dailies) {
     document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
     var maxTemp = Math.max(...dailies.map((item) => { return item.temp.max; }));
     console.log(maxTemp);
-    dailies.forEach(function (period, idx) {
+    dailies.forEach(function (period) {
         var d = new Date(0);
         d.setUTCSeconds(period.dt);
         var ISODate = d.toISOString().slice(0, 10);
@@ -431,7 +432,15 @@ function getMarkers() {
     };
     var bounds = new google.maps.LatLngBounds(),
         markers = [];
+    var idx = 0;
+    var markersIcons = {};
+    markersIcons[0] = 'blue';
+    markersIcons[1] = 'purple';
+    markersIcons[2] = 'green';
+    markersIcons[3] = 'yellow';
+    markersIcons[4] = 'red';
 
+    var maxTemp = Math.max(...currentList.weather.map((item) => { return item.daily[0].temp.max; }));
     map.data.forEach(function (feature) {
         // if (feature.getGeometry().getType() === 'Polygon') {
         //     feature.getGeometry().forEachLatLng(function(latlng) {
@@ -439,12 +448,17 @@ function getMarkers() {
         //     });
         // } else 
         if (feature.getGeometry().getType() === 'Point') {
+            var todayTemp = (currentList.weather[idx++].daily[0].temp.max);
+            var scale = Math.round((todayTemp/maxTemp) * 5) - 1;
+            console.log(scale)
+            console.log(todayTemp);
             var LatLng = feature.getGeometry().get(),
                 marker = new google.maps.Marker({
                     position: LatLng,
                     map: map,
                     title: feature.j.name
                 });
+                marker.setIcon(`http://maps.google.com/mapfiles/ms/icons/${markersIcons[scale]}-dot.png`)
             markers.push(marker);
             // remove previous markers from map.data
             map.data.remove(feature);

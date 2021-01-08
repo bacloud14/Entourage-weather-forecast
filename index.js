@@ -76,8 +76,17 @@ async function fetchWeather(city) {
 // 3 /////////////////////////////////////////////////////////////////////////////////////
 app.get('/nearby/:city', (req, res) => {
     try {
+        if (!req.params.city) {
+            return res.status(400).send({
+                error: true,
+                message: 'Bad request',
+                data: 'Bad request'
+            })
+        }
+
         var geometry = JSON.parse(req.params.city);
         var cityname = geometry.cityname;
+
         // Check the redis store for the data first
         client.get(cityname, async (err, result) => {
             if (result) {
