@@ -52,6 +52,13 @@ function initMap() {
                 elementType: "labels.icon",
                 stylers: [{ visibility: "off" }],
             },
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [
+                      { visibility: "off" }
+                ]
+            }
         ],
         night: [
             { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
@@ -196,8 +203,9 @@ function initMap() {
     // Specify just the place data fields that you need.
     autocomplete.setFields(["place_id", "geometry", "name"]);
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
-    const infowindow = new google.maps.InfoWindow();
-    const infowindowContent = document.getElementById("infowindow-content");
+    var infowindow = new google.maps.InfoWindow();
+    var infowindowContent = document.getElementById("infowindow-content");
+    let infowindowContent_prime = infowindowContent.cloneNode(true)
     infowindow.setContent(infowindowContent);
     const marker = new google.maps.Marker({
         map: map
@@ -207,6 +215,9 @@ function initMap() {
         markers.forEach(marker => {
             marker.addListener("click", () => {
                 console.log(marker.title)
+                infowindowContent_prime.getElementsByClassName("title")[0].innerHTML = marker.title
+                infowindow.close();
+                infowindow.setContent(infowindowContent_prime);
                 infowindow.open(map, marker);
                 if (currentList && currentList["features"] && currentList.features.length > 0) {
                     document.getElementById('location').innerHTML = marker.title; //currentList.features[0].properties.name;
@@ -242,10 +253,10 @@ function initMap() {
             placeId: place.place_id,
             location: place.geometry.location,
         });
-        marker.setVisible(true);
+        marker.setVisible(false);
         infowindowContent.children.namedItem("place-name").textContent = place.name;
-        infowindowContent.children.namedItem("place-id").textContent =
-            place.place_id;
+        // infowindowContent.children.namedItem("place-id").textContent =
+        //     place.place_id;
         infowindowContent.children.namedItem("place-address").textContent =
             place.formatted_address;
         infowindow.open(map, marker);
@@ -381,6 +392,7 @@ function renderForecastDays(dailies) {
     ];
     document.getElementById('forecast-items').innerHTML = "";
     document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
+    document.documentElement.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
     var maxTemp = Math.max(...dailies.map((item) => { return item.temp.max; }));
     console.log(maxTemp);
     dailies.forEach(function (period) {
@@ -450,8 +462,8 @@ function getMarkers() {
         if (feature.getGeometry().getType() === 'Point') {
             var todayTemp = (currentList.weather[idx++].daily[0].temp.max);
             var scale = Math.round((todayTemp/maxTemp) * 5) - 1;
-            console.log(scale)
-            console.log(todayTemp);
+            // console.log(scale)
+            // console.log(todayTemp);
             var LatLng = feature.getGeometry().get(),
                 marker = new google.maps.Marker({
                     position: LatLng,
