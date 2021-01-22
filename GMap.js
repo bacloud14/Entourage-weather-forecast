@@ -8,10 +8,9 @@
 var currentPlace;
 var map;
 var currentList;
-var markers;
+var markers = [];
 
 function initMap() {
-
     // Instanciate a map. For first visit, there is no search yet and as a result no center, thus we take the default. (lat: -33.8688,lng: 151.2195)
     center = undefined;
     if (currentList && currentList["features"] && currentList.features.length > 0) {
@@ -56,7 +55,7 @@ function initMap() {
                 featureType: "poi",
                 elementType: "labels",
                 stylers: [
-                      { visibility: "off" }
+                    { visibility: "off" }
                 ]
             }
         ],
@@ -169,9 +168,8 @@ function initMap() {
     // Populate current list of cities nearby on the map
     if (currentList && currentList["features"] && currentList.features.length > 0) {
         map.data.addGeoJson(currentList);
-        markers = getMarkers();
-
         clearMarkers();
+        getMarkers();
         showMarkers();
         map.data.setStyle({
             strokeColor: "blue"
@@ -231,9 +229,6 @@ function initMap() {
 
     // A possible second search (although not well managed and buggy, now) 
     autocomplete.addListener("place_changed", () => {
-        markers = getMarkers();
-        if (markers.length > 0)
-            clearMarkers();
         infowindow.close();
         const place = autocomplete.getPlace();
 
@@ -259,7 +254,7 @@ function initMap() {
         //     place.place_id;
         infowindowContent.children.namedItem("place-address").textContent =
             place.formatted_address;
-        infowindow.open(map, marker);
+        // infowindow.open(map, marker);
         currentPlace = place;
         getPicture(place.name);
         nearbyRequest(place);
@@ -436,14 +431,14 @@ function renderForecastDays(dailies) {
 // Detach old features then attach new markers to map
 function getMarkers() {
     if (!currentList)
-        return false;
+        return;
     coordinates = currentList.features[0].geometry.coordinates;
     center = {
         lat: coordinates[1],
         lng: coordinates[0]
     };
-    var bounds = new google.maps.LatLngBounds(),
-        markers = [];
+    var bounds = new google.maps.LatLngBounds();
+
     var idx = 0;
     var markersIcons = {};
     markersIcons[0] = 'blue';
@@ -461,7 +456,7 @@ function getMarkers() {
         // } else 
         if (feature.getGeometry().getType() === 'Point') {
             var todayTemp = (currentList.weather[idx++].daily[0].temp.max);
-            var scale = Math.round((todayTemp/maxTemp) * 5) - 1;
+            var scale = Math.round((todayTemp / maxTemp) * 5) - 1;
             // console.log(scale)
             // console.log(todayTemp);
             var LatLng = feature.getGeometry().get(),
@@ -470,13 +465,12 @@ function getMarkers() {
                     map: map,
                     title: feature.j.name
                 });
-                marker.setIcon(`http://maps.google.com/mapfiles/ms/icons/${markersIcons[scale]}-dot.png`)
+            marker.setIcon(`http://maps.google.com/mapfiles/ms/icons/${markersIcons[scale]}-dot.png`)
             markers.push(marker);
             // remove previous markers from map.data
             map.data.remove(feature);
         }
     });
-    return markers;
 }
 // Sets the map on all markers in the array.
 function setMapOnAll(map) {
@@ -486,10 +480,17 @@ function setMapOnAll(map) {
 }
 // Removes the markers from the map, but keeps them in the array.
 function clearMarkers() {
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setVisible(false);
+    }
     setMapOnAll(null);
+    markers = [];
 }
 // Shows any markers currently in the array.
 function showMarkers() {
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setVisible(true);
+    }
     setMapOnAll(map);
 }
 
