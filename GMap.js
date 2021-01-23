@@ -310,6 +310,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 // Create an AJAX request for one place this is called once the user search for a city. "nearby/" is the main API in back-end
 function nearbyRequest(place) {
+    show(); // Block page while loading
     let request = new XMLHttpRequest();
     requestObject = JSON.stringify({
         lat: place.geometry.location.lat(),
@@ -324,6 +325,7 @@ function nearbyRequest(place) {
         renderForecastDays(currentList.weather[0].daily);
         initMap();
         generateWidgetLink();
+        hide(); // Unblock page
     };
     request.send();
 }
@@ -516,11 +518,20 @@ function getPicture(place) {
     function callback(results, status) {
         document.getElementById('imgGrid').innerHTML = "";
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            var photos = results.map(function(elem){return elem.photos[0].getUrl()});
-            var names = results.map(function(elem){return elem.name})
+            var photos = results.map(function (elem) { return elem.photos[0].getUrl() });
+            var names = results.map(function (elem) { return elem.name })
             for (var i = 0; i < photos.length; i++) {
-                document.getElementById('imgGrid').innerHTML += '<div class="featured_pictures"><img src="'+photos[i]+'" alt="'+names[i]+'" /></div>';
+                document.getElementById('imgGrid').innerHTML += '<div class="featured_pictures"><img src="' + photos[i] + '" alt="' + names[i] + '" /></div>';
             }
         }
     }
+}
+
+function show() {
+    document.getElementById("spinner-back").classList.add("show");
+    document.getElementById("spinner-front").classList.add("show");
+}
+function hide() {
+    document.getElementById("spinner-back").classList.remove("show");
+    document.getElementById("spinner-front").classList.remove("show");
 }
