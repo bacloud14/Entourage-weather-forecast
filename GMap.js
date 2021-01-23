@@ -506,18 +506,20 @@ function getPicture(place) {
     var service = new google.maps.places.PlacesService(map);
     var request = {
         location: map.getCenter(),
-        radius: '500',
-        query: place
+        radius: '3000',
+        query: place,
+        type: ['park'] //, 'mosque', 'airport', 'amusement_park', 'art_gallery', 'casino', 'church', 'museum', 'park', 'synagogue', 'tourist_attraction', 'university']
     };
-    service.textSearch(request, callback);
+    service.nearbySearch(request, callback);
     // Checks that the PlacesServiceStatus is OK, and adds a marker
     // using the place ID and location from the PlacesService.
     function callback(results, status) {
+        document.getElementById('imgGrid').innerHTML = "";
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            if (results[0].photos[0]) {
-                document.getElementById("featured_picture").style = "background-size: contain; background-repeat: no-repeat; background-position: center;"
-                document.getElementById("featured_picture").style.backgroundImage = "url('" + results[0].photos[0].getUrl() + "')";
-                // document.getElementById("featured_picture").style.background = "center"; 
+            var photos = results.map(function(elem){return elem.photos[0].getUrl()});
+            var names = results.map(function(elem){return elem.name})
+            for (var i = 0; i < photos.length; i++) {
+                document.getElementById('imgGrid').innerHTML += '<div class="featured_pictures"><img src="'+photos[i]+'" alt="'+names[i]+'" /></div>';
             }
         }
     }

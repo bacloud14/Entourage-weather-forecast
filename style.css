@@ -113,7 +113,7 @@ ul {
   background: rgb(235, 243, 216);
 }
 
-#featured_picture {
+/* #featured_picture {
   margin-top: 5%;
   width: 100%;
   height: 100%;
@@ -124,7 +124,7 @@ ul {
   margin: auto;
   line-height: 51px;
   vertical-align: middle;
-}
+} */
 
 [data-theme="dark"] {
   background-color: #111 !important;
@@ -153,4 +153,22 @@ ul {
 
 [data-theme="dark"] .navbar-brand {
   color: #eee !important;
+}
+
+section{
+  display: flex;
+  flex-wrap: wrap;
+}
+div.featured_pictures{
+  flex-grow: 1;
+  margin: 2px;
+  background-color: violet;
+  height: 200px;
+}
+img{
+  height: 200px;
+  object-fit: cover;
+  max-width: 100%;
+  min-width: 100%;
+  vertical-align: bottom;
 }
