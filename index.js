@@ -153,4 +153,27 @@ function formatCities(cities, weathers) {
     return newVar;
 }
 
+var dns = require('dns');
+
+app.use(function (req, res, next) {
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  if (ip.substr(0, 7) == "::ffff:") {
+    ip = ip.substr(7)
+  }
+
+  if (process.env.NODE_ENV == "dev" || ip.split('.')[0] == "127")
+    return next();
+  var reversed_ip = ip.split('.').reverse().join('.');
+  dns.resolve4([process.env.HONEYPOT_KEY, reversed_ip, 'dnsbl.httpbl.org'].join('.'), function (err, addresses) {
+    if (!addresses)
+      return next();
+    var _response = addresses.toString().split('.').map(Number);
+    var test = (_response[0] === 127 && _response[3] > 0); //visitor_type[_response[3]]
+    if (test)
+      res.send({ msg: 'we hate spam to begin with!' });
+    return next();
+  });
+});
+
+
 module.exports = app;

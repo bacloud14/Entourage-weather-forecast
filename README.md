@@ -10,7 +10,7 @@ It is a NodeJs & Express web app with other dependencies (axios, redis, reverse-
 - Replace Google Map and Openweathermap API keys with yours. Don't forget to set origins in your cloud accounts. Search for YOUR_GOOGLEMAPS_API_KEY and YOUR_OPENWEATHERMAP_API_KEY.
 - Install and run Redis server.
 - Configure .env file with the followings:
-    - NODE_ENV=development
+    - NODE_ENV=dev
     - NODE_PORT=####
     - REDIS_PORT=####
     - OPENWEATHERMAP_API_KEY=YOUR_OPENWEATHERMAP_API_KEY
