@@ -152,18 +152,26 @@ function initMap() {
 
     // first time visit: map styling if night or regular 
     var darkThemeSelected = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
-    if (darkThemeSelected)
+    if (darkThemeSelected) {
+        document.documentElement.style.backgroundColor = '#111'
         map.setOptions({ styles: styles["night"] });
-    else
+    }
+    else {
+        document.documentElement.style.backgroundColor = '#eee'
         map.setOptions({ styles: styles["hide"] });
+    }
 
     // on toggle.
     google.maps.event.addDomListener(document.getElementById('darkSwitch'), "click", function () {
         var toggle = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
-        if (!toggle)
+        if (!toggle) {
+            document.documentElement.style.backgroundColor = '#111'
             map.setOptions({ styles: styles["night"] });
-        else
+        }
+        else {
+            document.documentElement.style.backgroundColor = '#eee'
             map.setOptions({ styles: styles["hide"] });
+        }
     });
     // Populate current list of cities nearby on the map
     if (currentList && currentList["features"] && currentList.features.length > 0) {
@@ -418,15 +426,15 @@ function renderForecastDays(dailies) {
 
         document.getElementById('forecast-items').insertAdjacentHTML('afterbegin', template);
     });
-    const template = (`
-        <div class="card" style="width: 20%">
-            <div class="card-body">
-                <h4 class="card-title text-center">Featured picture</h4>
-                <p>Image bellow should be hidden. on click here should show the image</p>
-            </div>
-        </div>
-    `);
-    document.getElementById('forecast-items').insertAdjacentHTML('beforeend', template);
+    // const template = (`
+    //     <div class="card" style="width: 20%">
+    //         <div class="card-body">
+    //             <h4 class="card-title text-center">Featured picture</h4>
+    //             <p>Image bellow should be hidden. on click here should show the image</p>
+    //         </div>
+    //     </div>
+    // `);
+    // document.getElementById('forecast-items').insertAdjacentHTML('beforeend', template);
 }
 
 // #getMarkers, #setMapOnAll, #clearMarkers, #showMarkers are helpers to refresh markers. 
