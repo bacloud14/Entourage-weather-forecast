@@ -155,10 +155,12 @@ function initMap() {
     if (darkThemeSelected) {
         document.documentElement.style.backgroundColor = '#111'
         map.setOptions({ styles: styles["night"] });
+        document.getElementById("copyright_google").src = "./copyright_google/powered_by_google_on_non_white_hdpi.png";
     }
     else {
         document.documentElement.style.backgroundColor = '#eee'
         map.setOptions({ styles: styles["hide"] });
+        document.getElementById("copyright_google").src = "./copyright_google/powered_by_google_on_white_hdpi.png";
     }
 
     // on toggle.
@@ -167,10 +169,12 @@ function initMap() {
         if (!toggle) {
             document.documentElement.style.backgroundColor = '#111'
             map.setOptions({ styles: styles["night"] });
+            document.getElementById("copyright_google").src = "./copyright_google/powered_by_google_on_non_white_hdpi.png";
         }
         else {
             document.documentElement.style.backgroundColor = '#eee'
             map.setOptions({ styles: styles["hide"] });
+            document.getElementById("copyright_google").src = "./copyright_google/powered_by_google_on_white_hdpi.png";
         }
     });
     // Populate current list of cities nearby on the map
