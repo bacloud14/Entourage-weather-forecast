@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SunnySunday</title>
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
@@ -13,15 +14,15 @@
     integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
     crossorigin="anonymous"></script>
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLEMAPS_API_KEY&callback=initMap&libraries=places&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&callback=initMap&libraries=places&v=weekly"
     defer></script>
-  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <link rel="stylesheet" type="text/css" href="./css/style.css" />
 </head>
 
 <body>
   <div id="spinner-back"></div>
   <div id="spinner-front">
-    <img src="./loading.gif" /><br>
+    <img src="./img/loading.gif" /><br>
   </div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">SunnySunday</a>
@@ -38,7 +39,7 @@
           <a class="nav-link disabled" id="widget" href="#">City week forecast</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="hometown">Weather map</a>
+          <a class="nav-link" href="weather_map_view">Weather map</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Donate</a>
@@ -59,7 +60,7 @@
             <input type="checkbox" class="custom-control-input" id="darkSwitch" />
             <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
           </div>
-          <script src="dark-mode-switch.js"></script>
+          <script src="./js/dark-mode-switch.js"></script>
         </li>
       </ul>
       </ul>
@@ -131,6 +132,6 @@
         <!-- Copyright -->
       </footer>
 </body>
-<script src="./GMap.js"></script>
+<script src="./js/GMap.js"></script>
 
 </html>

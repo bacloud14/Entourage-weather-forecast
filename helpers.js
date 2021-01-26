@@ -19,3 +19,4 @@ function getCityId(coord) {
         return undefined;
     }
 }
+

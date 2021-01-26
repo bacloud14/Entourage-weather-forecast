@@ -30,8 +30,8 @@ app.listen(nodePort, () => {
     console.log(`Server running on port ${nodePort}`);
 });
 app.use(express.static(__dirname + "/"));
-app.get('/hometown/', (req, res) => {
-    res.redirect("/hometown.html");
+app.get('/weather_map_view/', (req, res) => {
+    res.redirect("/Weather_map_view.html");
 });
 // make a connection to the local instance of redis
 const client = redis.createClient(redisPort);
