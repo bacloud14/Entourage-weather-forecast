@@ -70,7 +70,6 @@ async function fetchWeather(city) {
         const data = await body.data;
         resolve(data);
     });
-
 }
 
 // 3 /////////////////////////////////////////////////////////////////////////////////////

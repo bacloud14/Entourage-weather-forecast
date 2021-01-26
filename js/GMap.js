@@ -9,6 +9,7 @@ var currentPlace;
 var map;
 var currentList;
 var markers = [];
+var myStorage = window.localStorage;
 /*
     variables defined in js_variables.js:
      - styles for Google map styling
@@ -46,7 +47,7 @@ function initMap() {
 
     // first time visit: map styling if night or regular 
     var darkThemeSelected = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
-    if (darkThemeSelected) 
+    if (darkThemeSelected)
         styleItDark
     else
         styleItWhite
@@ -128,7 +129,7 @@ function initMap() {
         const place = autocomplete.getPlace();
 
         if (!place.geometry) return;
-        
+
 
         if (place.geometry.viewport) {
             map.fitBounds(place.geometry.viewport);
@@ -398,6 +399,14 @@ function generateWidgetLink() {
 }
 
 function getPicture(place) {
+    var cache = localStorage.getItem(place);
+    if (cache) {
+        cache = JSON.parse(cache);
+        for (var i = 0; i < cache.photos.length; i++) {
+            document.getElementById('imgGrid').innerHTML += '<div class="featured_pictures"><img src="' + cache.photos[i] + '" alt="' + cache.names[i] + '" /></div>';
+        }
+        return;
+    }
     var service = new google.maps.places.PlacesService(map);
     var request = {
         location: map.getCenter(),
@@ -412,7 +421,8 @@ function getPicture(place) {
         document.getElementById('imgGrid').innerHTML = "";
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             var photos = results.map(function (elem) { return elem.photos[0].getUrl() });
-            var names = results.map(function (elem) { return elem.name })
+            var names = results.map(function (elem) { return elem.name });
+            localStorage.setItem(place, JSON.stringify({ photos: photos, names: names }));
             for (var i = 0; i < photos.length; i++) {
                 document.getElementById('imgGrid').innerHTML += '<div class="featured_pictures"><img src="' + photos[i] + '" alt="' + names[i] + '" /></div>';
             }
