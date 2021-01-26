@@ -9,11 +9,17 @@ var currentPlace;
 var map;
 var currentList;
 var markers = [];
+/*
+    variables defined in js_variables.js:
+     - styles for Google map styling
+     - show_loading() and hide_loading() for loading gif visibility
+     - styleItDark() styleItWhite() for altering dom style based on dark mode choice
+*/
 
 function initMap() {
     // Instanciate a map. For first visit, there is no search yet and as a result no center, thus we take the default. (lat: -33.8688,lng: 151.2195)
     center = undefined;
-    if (currentList && currentList["features"] && currentList.features.length > 0) {
+    if (currentList && currentList.features && currentList.features.length > 0) {
         coordinates = currentList.features[0].geometry.coordinates;
         center = {
             lat: coordinates[1],
@@ -38,147 +44,24 @@ function initMap() {
         google.maps.event.trigger(map, 'resize');
     }
 
-    // less styling, setting business positions off and transit off
-    const styles = {
-        default: [],
-        hide: [
-            {
-                featureType: "poi.business",
-                stylers: [{ visibility: "off" }],
-            },
-            {
-                featureType: "transit",
-                elementType: "labels.icon",
-                stylers: [{ visibility: "off" }],
-            },
-            {
-                featureType: "poi",
-                elementType: "labels",
-                stylers: [
-                    { visibility: "off" }
-                ]
-            }
-        ],
-        night: [
-            { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
-            { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
-            { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
-            {
-                featureType: "administrative.locality",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#d59563" }],
-            },
-            {
-                featureType: "poi",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#d59563" }],
-            },
-            {
-                featureType: "poi.park",
-                elementType: "geometry",
-                stylers: [{ color: "#263c3f" }],
-            },
-            {
-                featureType: "poi.park",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#6b9a76" }],
-            },
-            {
-                featureType: "road",
-                elementType: "geometry",
-                stylers: [{ color: "#38414e" }],
-            },
-            {
-                featureType: "road",
-                elementType: "geometry.stroke",
-                stylers: [{ color: "#212a37" }],
-            },
-            {
-                featureType: "road",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#9ca5b3" }],
-            },
-            {
-                featureType: "road.highway",
-                elementType: "geometry",
-                stylers: [{ color: "#746855" }],
-            },
-            {
-                featureType: "road.highway",
-                elementType: "geometry.stroke",
-                stylers: [{ color: "#1f2835" }],
-            },
-            {
-                featureType: "road.highway",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#f3d19c" }],
-            },
-            {
-                featureType: "transit",
-                elementType: "geometry",
-                stylers: [{ color: "#2f3948" }],
-            },
-            {
-                featureType: "transit.station",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#d59563" }],
-            },
-            {
-                featureType: "water",
-                elementType: "geometry",
-                stylers: [{ color: "#17263c" }],
-            },
-            {
-                featureType: "water",
-                elementType: "labels.text.fill",
-                stylers: [{ color: "#515c6d" }],
-            },
-            {
-                featureType: "water",
-                elementType: "labels.text.stroke",
-                stylers: [{ color: "#17263c" }],
-            },
-            {
-                featureType: "poi.business",
-                stylers: [{ visibility: "off" }],
-            },
-            {
-                featureType: "transit",
-                elementType: "labels.icon",
-                stylers: [{ visibility: "off" }],
-            },
-        ]
-    };
-
     // first time visit: map styling if night or regular 
     var darkThemeSelected = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
-    if (darkThemeSelected) {
-        document.documentElement.style.backgroundColor = '#111'
-        map.setOptions({ styles: styles["night"] });
-        document.getElementById("copyright_google").src = "./copyright_google/powered_by_google_on_non_white_hdpi.png";
-    }
-    else {
-        document.documentElement.style.backgroundColor = '#eee'
-        map.setOptions({ styles: styles["hide"] });
-        document.getElementById("copyright_google").src = "./copyright_google/powered_by_google_on_white_hdpi.png";
-    }
+    if (darkThemeSelected) 
+        styleItDark
+    else
+        styleItWhite
 
     // on toggle.
     google.maps.event.addDomListener(document.getElementById('darkSwitch'), "click", function () {
         var toggle = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
-        if (!toggle) {
-            document.documentElement.style.backgroundColor = '#111'
-            map.setOptions({ styles: styles["night"] });
-            document.getElementById("copyright_google").src = "./copyright_google/powered_by_google_on_non_white_hdpi.png";
-        }
-        else {
-            document.documentElement.style.backgroundColor = '#eee'
-            map.setOptions({ styles: styles["hide"] });
-            document.getElementById("copyright_google").src = "./copyright_google/powered_by_google_on_white_hdpi.png";
-        }
+        if (!toggle)
+            styleItDark
+        else
+            styleItWhite
     });
+
     // Populate current list of cities nearby on the map
-    if (currentList && currentList["features"] && currentList.features.length > 0) {
+    if (currentList && currentList.features && currentList.features.length > 0) {
         map.data.addGeoJson(currentList);
         clearMarkers();
         getMarkers();
@@ -196,7 +79,7 @@ function initMap() {
         map.fitBounds(bounds);
         map.setCenter(center)
     }
-    // initMarkers();
+
     // Create the autocompletion search bar
     var input = document.getElementById("pac-input");
     if (input == null) {
@@ -229,7 +112,7 @@ function initMap() {
                 infowindow.close();
                 infowindow.setContent(infowindowContent_prime);
                 infowindow.open(map, marker);
-                if (currentList && currentList["features"] && currentList.features.length > 0) {
+                if (currentList && currentList.features && currentList.features.length > 0) {
                     document.getElementById('location').innerHTML = marker.title; //currentList.features[0].properties.name;
                     cityWeather = currentList.weather.filter((item) => {
                         return (item.cityName == marker.title);
@@ -244,9 +127,8 @@ function initMap() {
         infowindow.close();
         const place = autocomplete.getPlace();
 
-        if (!place.geometry) {
-            return;
-        }
+        if (!place.geometry) return;
+        
 
         if (place.geometry.viewport) {
             map.fitBounds(place.geometry.viewport);
@@ -273,8 +155,7 @@ function initMap() {
     });
 
     var panButton = document.getElementsByClassName("custom-map-control-button")[0];
-    if (panButton)
-        return;
+    if (panButton) return;
     infoWindow = new google.maps.InfoWindow();
     const locationButton = document.createElement("button");
     locationButton.textContent = "Go to Current Location";
@@ -322,7 +203,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 // Create an AJAX request for one place this is called once the user search for a city. "nearby/" is the main API in back-end
 function nearbyRequest(place) {
-    show(); // Block page while loading
+    show_loading(); // Block page while loading
     let request = new XMLHttpRequest();
     requestObject = JSON.stringify({
         lat: place.geometry.location.lat(),
@@ -337,7 +218,7 @@ function nearbyRequest(place) {
         renderForecastDays(currentList.weather[0].daily);
         initMap();
         generateWidgetLink();
-        hide(); // Unblock page
+        hide_loading(); // Unblock page
     };
     request.send();
 }
@@ -537,13 +418,4 @@ function getPicture(place) {
             }
         }
     }
-}
-
-function show() {
-    document.getElementById("spinner-back").classList.add("show");
-    document.getElementById("spinner-front").classList.add("show");
-}
-function hide() {
-    document.getElementById("spinner-back").classList.remove("show");
-    document.getElementById("spinner-front").classList.remove("show");
 }
