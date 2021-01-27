@@ -1,3 +1,5 @@
+var myStorage = window.localStorage;
+
 // less styling, setting business positions off and transit off
 const styles = {
     default: [],
@@ -131,4 +133,36 @@ function show_loading() {
 function hide_loading() {
     document.getElementById("spinner-back").classList.remove("show");
     document.getElementById("spinner-front").classList.remove("show");
+}
+
+function setWithExpiry(key, value) {
+    const now = new Date()
+    const day = { day: now.getDay(), month: now.getMonth(), year: now.getFullYear() }
+
+    // `item` is an object which contains the original value
+    // as well as today's date
+    const item = {
+        value: value,
+        expiry: day
+    }
+    myStorage.setItem(key, JSON.stringify(item))
+}
+
+function getWithExpiry(key) {
+    const itemStr = myStorage.getItem(key)
+    // if the item doesn't exist, return null
+    if (!itemStr) {
+        return null
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+    console.log(item)
+    // compare the expiry time of the item with the current time
+    if (now.getDay() != item.expiry.day || now.getMonth() != item.expiry.month || now.getFullYear() != item.expiry.year) {
+        // If the item generated today, delete the item from storage
+        // and return null
+        myStorage.removeItem(key)
+        return null
+    }
+    return item.value
 }
