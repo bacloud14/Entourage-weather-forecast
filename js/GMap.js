@@ -9,7 +9,7 @@ var currentPlace;
 var map;
 var currentList;
 var markers = [];
-
+var autocomplete;
 /*
     variables defined in js_variables.js:
      - styles for Google map styling
@@ -47,18 +47,12 @@ function initMap() {
 
     // first time visit: map styling if night or regular 
     var darkThemeSelected = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
-    if (darkThemeSelected)
-        styleItDark
-    else
-        styleItWhite
+    darkThemeSelected ? styleItDark() : styleItWhite()
 
     // on toggle.
     google.maps.event.addDomListener(document.getElementById('darkSwitch'), "click", function () {
         var toggle = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
-        if (!toggle)
-            styleItDark
-        else
-            styleItWhite
+        toggle ? styleItWhite() : styleItDark()
     });
 
     // Populate current list of cities nearby on the map
@@ -92,11 +86,14 @@ function initMap() {
         document.body.appendChild(div);
         input = document.getElementById("pac-input");
     }
-    const autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.bindTo("bounds", map);
-    // Specify just the place data fields that you need.
-    autocomplete.setFields(["place_id", "geometry", "name"]);
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+    if (!autocomplete) {
+        autocomplete = new google.maps.places.Autocomplete(input);
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+        autocomplete.bindTo("bounds", map);
+        // Specify just the place data fields that you need.
+        autocomplete.setFields(["place_id", "geometry", "name"]);
+    }
+
     var infowindow = new google.maps.InfoWindow();
     var infowindowContent = document.getElementById("infowindow-content");
     let infowindowContent_prime = infowindowContent.cloneNode(true)
@@ -208,7 +205,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 function nearbyRequest(place) {
     show_loading(); // Block page while loading
     var cache = getWithExpiry("response_" + place.name);
-    if (cache && cache.length>0) {
+    if (cache && cache.length > 0) {
         currentList = cache;
         document.getElementById('location').innerHTML = currentList.features[0].properties.name;
         renderForecastDays(currentList.weather[0].daily);
@@ -308,9 +305,11 @@ function renderForecastDays(dailies) {
         const maxTempF = period.temp.max || 'N/A';
         const minTempF = period.temp.min || 'N/A';
         const weather = period.weather[0].description || 'N/A';
-        var h = (1.0 - (maxTempF / maxTemp)) * 240;
-        var hueColor = "hsl(" + h + ", 90%, 80%)";
-        var hueColor = "; background-color: " + hueColor;
+        var hue = (1.0 - (maxTempF / maxTemp)) * 240;
+        var hueColor = `hsl( ${hue} , 90%, 80%)`;
+        
+        
+        hueColor = "; background-color: " + hueColor;
         const template = (`
             <div class="card" style="width: 20%${hueColor}">
                 <div class="card-body">
@@ -434,8 +433,10 @@ function getPicture(place) {
     function callback(results, status) {
         document.getElementById('imgGrid').innerHTML = "";
         if (status == google.maps.places.PlacesServiceStatus.OK) {
-            var photos = results.map(function (elem) { return elem.photos[0].getUrl() });
-            var names = results.map(function (elem) { return elem.name });
+            var photos = results.map(elem => { return elem.photos ? elem.photos[0].getUrl() : undefined }).filter(elem => { return elem });
+            var names = results.map(elem => { return elem.name });
+            if (!photos.length)
+                return;
             myStorage.setItem(place, JSON.stringify({ photos: photos, names: names }));
             for (var i = 0; i < photos.length; i++) {
                 document.getElementById('imgGrid').innerHTML += '<div class="featured_pictures"><img src="' + photos[i] + '" alt="' + names[i] + '" /></div>';
