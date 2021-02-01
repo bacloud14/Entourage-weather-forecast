@@ -45,7 +45,7 @@ function initMap() {
         google.maps.event.trigger(map, 'resize');
     }
 
-    // first time visit: map styling if night or regular 
+    // first time visit: map styling if night or regular
     var darkThemeSelected = localStorage.getItem('darkSwitch') !== null && localStorage.getItem('darkSwitch') === 'dark';
     darkThemeSelected ? styleItDark() : styleItWhite()
 
@@ -120,7 +120,7 @@ function initMap() {
             });
         });
 
-    // A possible second search (although not well managed and buggy, now) 
+    // A possible second search (although not well managed and buggy, now)
     autocomplete.addListener("place_changed", () => {
         infowindow.close();
         const place = autocomplete.getPlace();
@@ -199,8 +199,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 
-// Look for weather cached data for today (local user time) for the city, if not found 
-// create an AJAX request for one place; This is called once the user search for a city. 
+// Look for weather cached data for today (local user time) for the city, if not found
+// create an AJAX request for one place; This is called once the user search for a city.
 // "nearby/" is the main API in back-end
 function nearbyRequest(place) {
     show_loading(); // Block page while loading
@@ -292,8 +292,8 @@ function renderForecastDays(dailies) {
         'Saturday'
     ];
     document.getElementById('forecast-items').innerHTML = "";
-    document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
-    document.documentElement.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
+    document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png), linear-gradient(to bottom, #82addb 0%,#ebb2b1 100%)`;
+    document.documentElement.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png), linear-gradient(rgb(235, 178, 177) 0%, rgb(130, 173, 219) 100%)`;
     var maxTemp = Math.max(...dailies.map((item) => { return item.temp.max; }));
     console.log(maxTemp);
     dailies.forEach(function (period) {
@@ -307,8 +307,8 @@ function renderForecastDays(dailies) {
         const weather = period.weather[0].description || 'N/A';
         var hue = (1.0 - (maxTempF / maxTemp)) * 240;
         var hueColor = `hsl( ${hue} , 90%, 80%)`;
-        
-        
+
+
         hueColor = "; background-color: " + hueColor;
         const template = (`
             <div class="card" style="width: 20%${hueColor}">
@@ -317,7 +317,7 @@ function renderForecastDays(dailies) {
                     <h5 class="card-title text-center">${ISODate}</h5>
                     <p><img class="card-img mx-auto d-block" style="max-width: 100px;" src="${iconSrc}"></p>
                     <h6 class="card-title text-center">${weather}</h6>
-                    <p class="card-text text-center">High: ${maxTempF} Low: ${minTempF}</p>
+                    <p class="card-text text-center">High: ${maxTempF} <br />Low: ${minTempF}</p>
                 </div>
             </div>
         `);
@@ -335,7 +335,7 @@ function renderForecastDays(dailies) {
     // document.getElementById('forecast-items').insertAdjacentHTML('beforeend', template);
 }
 
-// #getMarkers, #setMapOnAll, #clearMarkers, #showMarkers are helpers to refresh markers. 
+// #getMarkers, #setMapOnAll, #clearMarkers, #showMarkers are helpers to refresh markers.
 // Detach old features then attach new markers to map
 function getMarkers() {
     if (!currentList)
@@ -361,7 +361,7 @@ function getMarkers() {
         //     feature.getGeometry().forEachLatLng(function(latlng) {
         //         bounds.extend(latlng);
         //     });
-        // } else 
+        // } else
         if (feature.getGeometry().getType() === 'Point') {
             var todayTemp = (currentList.weather[idx++].daily[0].temp.max);
             var scale = Math.round((todayTemp / maxTemp) * 5) - 1;

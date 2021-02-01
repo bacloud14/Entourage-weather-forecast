@@ -3,8 +3,7 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #eee;
-  background-repeat: repeat;
+  background: linear-gradient(to bottom, #82addb 0%,#ebb2b1 100%);
 }
 
 .controls {
@@ -100,7 +99,7 @@ ul {
 }
 
 .map_wrapper {
-  margin-top: 10px;
+  margin-top: 50px;
   position: relative;
   border: solid 1px rgb(0, 0, 0);
   width: 60%;
@@ -159,10 +158,6 @@ ul {
   background-color: rgb(0, 0, 0) !important;
 }
 
-#copyright_google {
-  background: rgba(192, 247, 244, 0.616);
-}
-
 section{
   display: flex;
   flex-wrap: wrap;
@@ -209,4 +204,66 @@ div.featured_pictures{
 #spinner-back.show, #spinner-front.show {
   visibility: visible;
   opacity: 1;
+}
+
+.inactive {
+  display: none;
+}
+
+.nav-link {
+  color: white !important;
+  padding: 0;
+}
+
+.btn-secondary {
+  margin-right: 10px;
+}
+
+.navbar-brand {
+  font-size: x-large;
+  color: #6c757d;
+}
+
+.custom-control-label {
+  color: #6c757d;
+}
+
+#location {
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  font-size: xx-large;
+  font-weight: 800;
+  width: 70%;
+  color: #6c757d;
+}
+
+.row {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.card {
+  width: 12.5% !important;
+}
+
+#imgGrid {
+  width: 80%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+#imgGrid img {
+  border-radius: 5px;
+  border: none;
+}
+
+.sticky-bottom {
+  position: relative;
+  width: 100%;
+  margin: 163px 0 0 0;
+}
+
+#copyright_google {
+  height: 20px;
 }
