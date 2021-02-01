@@ -18,7 +18,7 @@ const rateLimit = require("express-rate-limit");
 // app.set('trust proxy', 1);
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
+    max: 30 // limit each IP to 100 requests per windowMs
 });
 //  apply to all requests
 app.use(limiter);
@@ -30,6 +30,9 @@ app.listen(nodePort, () => {
     console.log(`Server running on port ${nodePort}`);
 });
 app.use(express.static(__dirname + "/"));
+app.get('/ar/', (req, res) => {
+    res.redirect("/index_ar.html");
+});
 app.get('/weather_map_view/', (req, res) => {
     res.redirect("/Weather_map_view.html");
 });
@@ -88,6 +91,15 @@ app.get('/nearby/:city', (req, res) => {
 
         // Check the redis store for the data first
         client.get(cityname, async (err, result) => {
+            // redis unexpected errors
+            if (err)  {
+                console.error(err);
+                return res.status(500).send({
+                    error: true,
+                    message: 'Server error',
+                    data: 'Server error'
+                })
+            }
             if (result) {
                 return res.status(200).send({
                     error: false,

@@ -197,7 +197,7 @@ function getWithExpiry(key) {
     }
     const item = JSON.parse(itemStr)
     const now = new Date()
-    console.log(item)
+
     // compare the expiry time of the item with the current time
     if (now.getDay() != item.expiry.day || now.getMonth() != item.expiry.month || now.getFullYear() != item.expiry.year) {
         // If the item generated today, delete the item from storage
@@ -207,3 +207,9 @@ function getWithExpiry(key) {
     }
     return item.value
 }
+
+var autocompleteOptions = {
+    types: ['(cities)'],
+    // componentRestrictions: {country: "us"}
+};
+  

@@ -10,6 +10,7 @@ var map;
 var currentList;
 var markers = [];
 var autocomplete;
+var language = "en";
 /*
     variables defined in js_variables.js:
      - styles for Google map styling
@@ -18,8 +19,26 @@ var autocomplete;
 */
 
 function initMap() {
-    // Instanciate a map. For first visit, there is no search yet and as a result no center, thus we take the default. (lat: -33.8688,lng: 151.2195)
-    center = undefined;
+    // Instanciate a map. For first visit, there is no search yet and as a result no center, thus we take passsed parameters (language / centerLocation)
+    var center = { lat: -33.8688, lng: 151.2195 };
+    var scripts = document.getElementsByTagName('script');
+    var mapScript = scripts[3];
+    language = mapScript.getAttribute('lang');
+    var centerLocation = mapScript.getAttribute('centerLocation')
+    switch (centerLocation) {
+        case "algiers":
+            center = { lat: 36.75, lng: 3.05 };
+            break;
+        case "paris":
+            center = { lat: 48.85, lng: 2.35 }
+            break;
+        case "london":
+            center = { lat: 51.50, lng: 0.12 }
+            break;
+        default:
+            break;
+    }
+    
     if (currentList && currentList.features && currentList.features.length > 0) {
         coordinates = currentList.features[0].geometry.coordinates;
         center = {
@@ -30,10 +49,7 @@ function initMap() {
 
     if (!map) {
         map = new google.maps.Map(document.getElementById("map"), {
-            center: center || {
-                lat: -33.8688,
-                lng: 151.2195
-            },
+            center: center,
             zoom: 13,
         });
     } else {
@@ -87,7 +103,7 @@ function initMap() {
         input = document.getElementById("pac-input");
     }
     if (!autocomplete) {
-        autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete = new google.maps.places.Autocomplete(input, autocompleteOptions);
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
         autocomplete.bindTo("bounds", map);
         // Specify just the place data fields that you need.
@@ -282,20 +298,38 @@ function renderForecastDays(dailies) {
     // console.log(JSON.stringify(dailies));
     dailies.reverse();
 
-    const weekdayNames = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-    ];
+    var weekdayNames;
+    switch (language) {
+        case "en":
+            weekdayNames = [
+                'Sunday',
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday'
+            ];
+            break;
+        case "ar":
+            weekdayNames = [
+                'الأحد',
+                'الإثنين',
+                'الثلثاء',
+                'الأربعاء',
+                'الخميس',
+                'الجمعة',
+                'السبت'
+            ];
+            break;    
+        default:
+            break;
+    } 
     document.getElementById('forecast-items').innerHTML = "";
     document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png), linear-gradient(to bottom, #82addb 0%,#ebb2b1 100%)`;
     document.documentElement.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png), linear-gradient(rgb(235, 178, 177) 0%, rgb(130, 173, 219) 100%)`;
     var maxTemp = Math.max(...dailies.map((item) => { return item.temp.max; }));
-    console.log(maxTemp);
+
     dailies.forEach(function (period) {
         var d = new Date(0);
         d.setUTCSeconds(period.dt);
@@ -365,14 +399,13 @@ function getMarkers() {
         if (feature.getGeometry().getType() === 'Point') {
             var todayTemp = (currentList.weather[idx++].daily[0].temp.max);
             var scale = Math.round((todayTemp / maxTemp) * 5) - 1;
-            // console.log(scale)
-            // console.log(todayTemp);
             var LatLng = feature.getGeometry().get(),
                 marker = new google.maps.Marker({
                     position: LatLng,
                     map: map,
                     title: feature.j.name
                 });
+            (scale == 5) ? scale++ : scale
             marker.setIcon(`http://maps.google.com/mapfiles/ms/icons/${markersIcons[scale]}-dot.png`)
             markers.push(marker);
             // remove previous markers from map.data

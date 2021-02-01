@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="background-image: linear-gradient(rgb(235, 178, 177) 0%, rgb(130, 173, 219) 100%) !important;">
+<html lang="ar" dir="rtl"  style="background-image: linear-gradient(rgb(235, 178, 177) 0%, rgb(130, 173, 219) 100%) !important;">
 
 <head>
   <meta charset="UTF-8">
@@ -14,7 +14,7 @@
     integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
     crossorigin="anonymous"></script>
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcL91cr-kioveamPxcvnQTT4OA9asC1TE&callback=initMap&libraries=places&v=weekly" centerLocation="london" lang="en"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcL91cr-kioveamPxcvnQTT4OA9asC1TE&callback=initMap&libraries=places&v=weekly" centerLocation="algiers" lang="ar"
     defer></script>
   <link rel="stylesheet" type="text/css" href="./css/style.css" />
 </head>
@@ -24,6 +24,7 @@
   <div id="spinner-front">
     <img src="./img/loading.gif" /><br>
   </div>
+
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">SunnySunday</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -33,30 +34,29 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item inactive">
-          <a class="nav-link disabled" id="widget" href="#">City week forecast</a>
+          <a class="nav-link disabled" id="widget" href="#">الصفحة الرئيسية</a>
         </li>
         <li class="nav-item btn btn-secondary">
-          <a class="nav-link" href="weather_map_view">Weather map</a>
+          <a class="nav-link" href="weather_map_view">خريطة الطقس العامة</a>
         </li>
-
         <li class="nav-item btn btn-secondary">
-          <a class="nav-link" href="#">Donate</a>
+          <a class="nav-link" href="#">تبرع لالموقع</a>
         </li>
         <li class="nav-item inactive">
-          <a class="nav-link disabled" href="#">Version 2</a>
+          <a class="nav-link disabled" href="#">الاصدار 2</a>
         </li>
         <li class="nav-item btn btn-secondary">
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Disclaimer</a>
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">مسؤولية الخدمة</a>
         </li>
         <li class="nav-item btn btn-secondary">
-          <a class="nav-link" href='mailto:&#098;&#097;&#099;&#108;&#111;&#117;&#100;&#049;&#052;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=About SunnySunday'>Contact us</a>
+          <a class="nav-link" href='mailto:&#098;&#097;&#099;&#108;&#111;&#117;&#100;&#049;&#052;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;?subject=About SunnySunday'>اتصل بنا</a>
         </li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-link">
           <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" id="darkSwitch" />
-            <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+            <label class="custom-control-label" for="darkSwitch">الحلة المظلمة</label>
           </div>
           <script src="./js/dark-mode-switch.js"></script>
         </li>
@@ -71,31 +71,29 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">A "no responsibility" disclaimer</h5>
+          <h5 class="modal-title" id="exampleModalLabel">عدم المسؤولية</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          No warranties whatsoever! The service can go down without any alert. We take no responsibility for anything
-          beyond our control.
-          The website can hit usage limits for services like Openweathermap.org and Google maps and goes off. Please
-          note also that this website relies fully on data provided by other weather services like Openweathermap.org.
-          This means forecast can be inaccurate or incomplete. The website can be buggy including UI rendering and
-          data consistency.
-          The service does not gather or use any user information in any way. The only cache is "searched cities"
-          for faster responses;
-          "Anonymous" user visits like number of visits of some page can be gathered for better experience.
+          لا توجد ضمانات على الإطلاق! يمكن أن تسحب  الخدمة دون أي تنبيه. نحن لا نتحمل أي مسؤولية عن أي شيء
+          خارج عن سيطرتنا.
+          يمكن أن يصل موقعنا إلى حدود الاستفادة من خدمات Openweathermap.org وخرائط Google ويختفي. 
+          لاحظ أيضًا أن هذا الموقع يعتمد بشكل كامل على البيانات المقدمة من خدمات الطقس الأخرى مثل Openweathermap.org.
+          هذا يعني أن التبآت المناخية يمكن أن تكون غير دقيقة أو غير كاملة. يمكن أن يحتوي موقع الويب على أخطاء عرض واجهة المستخدم أيضا.
+          لا تقوم الخدمة بجمع أو استخدام أي معلومات مستخدم بأي شكل من الأشكال. التخزين المؤقت و الوحيد هو "المدن التي تم البحث عنها مسبقا"
+          يمكن جمع زيارات المستخدمين بشكل مشتت و لا تربط أبدا بمعلومات تشخص الزوار مثل عدد الزيارات لبعض الصفحات لغرض الحصول على تجربة أفضل.
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">غلق</button>
         </div>
       </div>
     </div>
   </div>
 
   <! this block can float in code, order doesnt matter>
-    <input id="pac-input" class="controls" type="text" placeholder="Enter a location" />
+    <input id="pac-input" class="controls" type="text" placeholder="أدخل موقعًا" />
     <div id="infowindow-content">
       <span id="place-name" class="title"></span><br />
       <!-- <strong>Place ID:</strong> <span id="place-id"></span><br /> -->
@@ -109,10 +107,9 @@
         <div id="map" style="width: 100%; height: 100%; "></div>
       </div>
       <div class="container-fluid">
-        <h3 id="location">Search for your city to display the 7-day forecast.</h3>
+        <h3 id="location">ستظهر هنا تنبآت الطقس لمدة أسبوع. يمكنك اختيار المدن المجاورة من الخريطة</h3>
         <div class="row" id="forecast-items"></div>
       </div>
-
 
       <section id="imgGrid">
 
