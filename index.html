@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-image: linear-gradient(rgb(235, 178, 177) 0%, rgb(130, 173, 219) 100%) !important;">
 
 <head>
   <meta charset="UTF-8">
@@ -14,7 +14,7 @@
     integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
     crossorigin="anonymous"></script>
   <script
-    src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_MAPS_API_KEY&callback=initMap&libraries=places&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcL91cr-kioveamPxcvnQTT4OA9asC1TE&callback=initMap&libraries=places&v=weekly"
     defer></script>
   <link rel="stylesheet" type="text/css" href="./css/style.css" />
 </head>
@@ -32,25 +32,22 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
+        <li class="nav-item inactive">
           <a class="nav-link disabled" id="widget" href="#">City week forecast</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item btn btn-secondary">
           <a class="nav-link" href="weather_map_view">Weather map</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item btn btn-secondary">
           <a class="nav-link" href="#">Donate</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item inactive">
           <a class="nav-link disabled" href="#">Version 2</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item btn btn-secondary">
           <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Disclaimer</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item btn btn-secondary">
           <a class="nav-link" href="#">Contact us</a>
         </li>
       </ul>
@@ -104,33 +101,32 @@
       <span id="place-address"></span>
     </div>
     <! / this block can float in code, order doesnt matter>
+      <div class="empty-space" style="width: 100%; height: 5%;">
 
+      </div>
       <div class="map_wrapper">
         <div id="map" style="width: 100%; height: 100%; "></div>
       </div>
-      <div class="container">
-        <h3 id="location">A one week forecast will appear here. You can choose cities from map</h3>
+      <div class="container-fluid">
+        <h3 id="location">Search for your city to display the 7-day forecast.</h3>
         <div class="row" id="forecast-items"></div>
       </div>
 
-      <!-- <div id="featured_picture">
-        <h3>Featured image</h3>
-      </div> -->
-      <!-- featured_pictures -->
-      <hr>
-      <img id="copyright_google" src='./copyright_google/powered_by_google_on_white_hdpi.png'>
+
       <section id="imgGrid">
 
       </section>
-      <br>
-      <footer class="bg-light text-center text-lg-start">
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+      <nav class="navbar sticky-bottom navbar-light bg-light">
+      <div class="container-fluid">
+        <img id="copyright_google" src='./copyright_google/powered_by_google_on_white_hdpi.png'>
+        <div class="center">
           © 2020 Copyright:
           <a class="text-dark" href="https://SunnySunday.com/">SunnySunday.com</a>
-        </div>
-        <!-- Copyright -->
-      </footer>
+  			</div>
+      </div>
+    </nav>
+
+
 </body>
 <script src="./js/js_variables.js"></script>
 <script src="./js/GMap.js"></script>
