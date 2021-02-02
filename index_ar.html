@@ -18,9 +18,16 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcL91cr-kioveamPxcvnQTT4OA9asC1TE&callback=initMap&libraries=places&v=weekly" centerLocation="algiers" lang="ar"
     defer></script>
   <link rel="stylesheet" type="text/css" href="./css/style.css" />
+  <script src="./js/cookies-eu-banner.js"></script>
 </head>
 
 <body>
+  <div id="cookies-eu-banner" style="display: none;">
+    مع الاستمرار في زيارة هذا الموقع ، فإنك تقبل استخدام ملفات تعريف الارتباط (cookies) بواسطة Google Analytics لأغراض إحصائية.
+    <a href="https://www.google.ae/intl/ar/about/company/user-consent-policy-help/" id="cookies-eu-more">اقرأ التفاصيل</a>
+    <button id="cookies-eu-reject">لا أوافق</button>
+    <button id="cookies-eu-accept">أوافق</button>
+  </div>
   <div id="spinner-back"></div>
   <div id="spinner-front">
     <img src="./img/loading.gif" /><br>
@@ -83,7 +90,9 @@
           يمكن أن يصل موقعنا إلى حدود الاستفادة من خدمات Openweathermap.org وخرائط Google ويختفي. 
           لاحظ أيضًا أن هذا الموقع يعتمد بشكل كامل على البيانات المقدمة من خدمات الطقس الأخرى مثل Openweathermap.org.
           هذا يعني أن التبآت المناخية يمكن أن تكون غير دقيقة أو غير كاملة. يمكن أن يحتوي موقع الويب على أخطاء عرض واجهة المستخدم أيضا.
-          لا تقوم الخدمة بجمع أو استخدام أي معلومات مستخدم بأي شكل من الأشكال. التخزين المؤقت و الوحيد هو "المدن التي تم البحث عنها مسبقا"
+          لا تقوم الخدمة بجمع أو استخدام أي معلومات مستخدم بأي شكل من الأشكال.
+          نحن نستخدم Google Analytics رغم  ذلك ، والذي يتتبع ويبلغ عن زيارات موقع الويب بناءً على ملفات تعريف الارتباط التي لا تخزن إلا معلومات مجهولة المصدر.
+          التخزين المؤقت و الوحيد هو "المدن التي تم البحث عنها مسبقا"
           يمكن جمع زيارات المستخدمين بشكل مشتت و لا تربط أبدا بمعلومات تشخص الزوار مثل عدد الزيارات لبعض الصفحات لغرض الحصول على تجربة أفضل.
         </div>
         <div class="modal-footer">
@@ -129,5 +138,11 @@
 </body>
 <script src="./js/js_variables.js"></script>
 <script src="./js/GMap.js"></script>
-
+<script>
+  new CookiesEuBanner(function () {
+      // Your code to launch when user accept cookies
+      // Google Analytics code goes here.
+      console.log("accepted")
+  });
+</script>
 </html>

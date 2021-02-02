@@ -18,9 +18,17 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcL91cr-kioveamPxcvnQTT4OA9asC1TE&callback=initMap&libraries=places&v=weekly" centerLocation="london" lang="en"
     defer></script>
   <link rel="stylesheet" type="text/css" href="./css/style.css" />
+  <script src="./js/cookies-eu-banner.js"></script>
+
 </head>
 
 <body>
+  <div id="cookies-eu-banner" style="display: none;">
+    By continuing to visit this site, you accept the use of cookies by Google Analytics for statistical purposes.
+    <a href="https://www.cookielaw.org/google-analytics-eu-cookie-law/" id="cookies-eu-more">Read more</a>
+    <button id="cookies-eu-reject">Reject</button>
+    <button id="cookies-eu-accept">Accept</button>
+  </div>
   <div id="spinner-back"></div>
   <div id="spinner-front">
     <img src="./img/loading.gif" /><br>
@@ -84,9 +92,9 @@
           note also that this website relies fully on data provided by other weather services like Openweathermap.org.
           This means forecast can be inaccurate or incomplete. The website can be buggy including UI rendering and
           data consistency.
-          The service does not gather or use any user information in any way. The only cache is "searched cities"
+          The service does not gather or use any user information in any way. 
+          We use Google Analytics however which tracks and reports website traffic based on cookies that store anonymous information. The only cache is "searched cities"
           for faster responses;
-          "Anonymous" user visits like number of visits of some page can be gathered for better experience.
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -132,5 +140,11 @@
 </body>
 <script src="./js/js_variables.js"></script>
 <script src="./js/GMap.js"></script>
-
+<script>
+  new CookiesEuBanner(function () {
+      // Your code to launch when user accept cookies
+      // Google Analytics code goes here.
+      console.log("accepted")
+  });
+</script>
 </html>
