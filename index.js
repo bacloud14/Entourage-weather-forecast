@@ -30,6 +30,21 @@ app.listen(nodePort, () => {
     console.log(`Server running on port ${nodePort}`);
 });
 app.use(express.static(__dirname + "/"));
+app.use(express.static(__dirname + "/", {
+    etag: true, // Just being explicit about the default.
+    lastModified: true,  // Just being explicit about the default.
+    setHeaders: (res, path) => {
+      const hashRegExp = new RegExp('\\.[0-9a-f]{8}\\.');
+  
+      if (path.endsWith('.html')) {
+        // All of the project's HTML files end in .html
+        res.setHeader('Cache-Control', 'no-cache');
+      } else if (hashRegExp.test(path)) {
+        // If the RegExp matched, then we have a versioned URL.
+        res.setHeader('Cache-Control', 'max-age=31536000');
+      }
+    },
+  }));
 app.get('/ar/', (req, res) => {
     res.redirect("/index_ar.html");
 });
@@ -42,6 +57,8 @@ client.on("error", (error) => {
     console.error(error);
 });
 
+
+  
 // 1 /////////////////////////////////////////////////////////////////////////////////////
 const fs = require('fs');
 let rawdata = fs.readFileSync('city.list.min.json');
