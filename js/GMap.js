@@ -234,7 +234,8 @@ function nearbyRequest(place) {
     requestObject = JSON.stringify({
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
-        cityname: place.name
+        cityname: place.name,
+        language: language
     });
     request.open('GET', "nearby/" + requestObject);
     request.responseType = 'json';

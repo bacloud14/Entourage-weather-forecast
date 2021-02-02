@@ -8,8 +8,6 @@ const helmet = require("helmet");
 const axios = require('axios');
 const redis = require('redis');
 const nearbyCities = require("nearby-cities");
-var weather = require('openweather-apis');
-weather.setLang('en');
 const app = express();
 app.use(helmet({ contentSecurityPolicy: false }));
 const rateLimit = require("express-rate-limit");
@@ -83,9 +81,10 @@ function getCityId(coord) {
 
 // 2 /////////////////////////////////////////////////////////////////////////////////////
 // get data from openweathermap API 
+var language = "en";
 async function fetchWeather(city) {
     return new Promise(async (resolve, reject) => {
-        API_Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${city["lat"]}&lon=${city["lon"]}&exclude=hourly,minutely,hourly&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
+        API_Url = `https://api.openweathermap.org/data/2.5/onecall?lat=${city["lat"]}&lon=${city["lon"]}&lang=${language}&exclude=hourly,minutely,hourly&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
         const body = await axios.get(API_Url);
         const data = await body.data;
         resolve(data);
@@ -105,6 +104,7 @@ app.get('/nearby/:city', (req, res) => {
 
         var geometry = JSON.parse(req.params.city);
         var cityname = geometry.cityname;
+        language = geometry.language;
 
         // Check the redis store for the data first
         client.get(cityname, async (err, result) => {
