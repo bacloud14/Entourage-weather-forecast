@@ -1,10 +1,24 @@
-html, body {
+html {
+  height: 100%;
+  background-color: rgb(235, 178, 177) !important;
+}
+
+html[data-theme='dark'] {
+  background-color: #2a2a3c !important;
+}
+
+body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom, #82addb 0%,#ebb2b1 100%);
+  background-color: rgb(235, 178, 177);
 }
+
+body[data-theme="dark"] {
+  background-color: #2a2a3c;
+}
+
 
 .controls {
   background-color: #fff;
@@ -58,44 +72,10 @@ html, body {
   width: 250px;
 }
 
-.place {
-  font-family: 'open sans', arial, sans-serif;
-  position: relative;
-  font-size: 1.2em;
-  font-weight: 500;
-  margin-block-end: 0px;
-  padding-left: 18px;
-  padding-right: 18px;
-}
-
-.distanceText {
-  color: silver;
-  font-family: 'open sans', arial, sans-serif;
-  font-size: 1em;
-  font-weight: 400;
-  margin-block-start: 0.25em;
-  padding-left: 18px;
-  padding-right: 18px;
-}
-
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-}
-
-.place li {
-  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
-  border-bottom: 1px solid #ccc;
-}
-
-.place li:last-child {
-  border: none;
-}
-
-.place li:hover {
-  font-size: 30px;
-  background: #f6f6f6;
 }
 
 .map_wrapper {
@@ -112,23 +92,6 @@ ul {
   background: rgba(192, 247, 244, 0.616);
 }
 
-/* #featured_picture {
-  margin-top: 5%;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
-
-#featured_picture h3 {
-  margin: auto;
-  line-height: 51px;
-  vertical-align: middle;
-} */
-
-[data-theme="dark"] {
-  background-color: #111 !important;
-  color: #eee;
-}
 
 [data-theme="dark"] .bg-light {
   background-color: #333 !important;
@@ -162,12 +125,14 @@ section{
   display: flex;
   flex-wrap: wrap;
 }
+
 div.featured_pictures{
   flex-grow: 1;
   margin: 2px;
   background-color: violet;
   height: 200px;
 }
+
 .featured_pictures img{
   height: 200px;
   object-fit: cover;
@@ -228,7 +193,7 @@ div.featured_pictures{
   color: #6c757d;
 }
 
-#location {
+#location, #gallery {
   margin: 0 auto;
   padding: 20px;
   text-align: center;
@@ -249,7 +214,7 @@ div.featured_pictures{
 
 #imgGrid {
   width: 80%;
-  margin: 0 auto;
+  margin: 50px auto;
   padding: 0;
 }
 
@@ -261,9 +226,18 @@ div.featured_pictures{
 .sticky-bottom {
   position: relative;
   width: 100%;
-  margin: 163px 0 0 0;
+  margin: 73px 0 0 0;
 }
 
 #copyright_google {
   height: 20px;
+}
+
+@media only screen and (max-width: 1200px) {
+  .row {
+    width: 100%;
+  }
+  h4 {
+    font-size: 1.2rem;
+  }
 }

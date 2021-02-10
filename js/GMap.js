@@ -38,7 +38,7 @@ function initMap() {
         default:
             break;
     }
-    
+
     if (currentList && currentList.features && currentList.features.length > 0) {
         coordinates = currentList.features[0].geometry.coordinates;
         center = {
@@ -322,15 +322,14 @@ function renderForecastDays(dailies) {
                 'الجمعة',
                 'السبت'
             ];
-            break;    
+            break;
         default:
             break;
-    } 
+    }
+    document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
+    document.documentElement.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png)`;
     document.getElementById('forecast-items').innerHTML = "";
-    document.body.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png), linear-gradient(to bottom, #82addb 0%,#ebb2b1 100%)`;
-    document.documentElement.style.backgroundImage = `url(http://openweathermap.org/img/wn/${dailies[dailies.length - 1].weather[0].icon || 'na'}.png), linear-gradient(rgb(235, 178, 177) 0%, rgb(130, 173, 219) 100%)`;
     var maxTemp = Math.max(...dailies.map((item) => { return item.temp.max; }));
-
     dailies.forEach(function (period) {
         var d = new Date(0);
         d.setUTCSeconds(period.dt);
