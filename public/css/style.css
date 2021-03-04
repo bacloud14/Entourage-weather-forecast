@@ -316,7 +316,7 @@ div.featured_pictures{
 }
 
 .sticky-bottom {
-  position: relative;
+  position: fixed ;
   width: 100%;
   margin: 73px 0 0 0;
 }

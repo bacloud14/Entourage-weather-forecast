@@ -79,4 +79,8 @@ app.use(function (req, res, next) {
   })
 })
 
+app.use(function ( req,res,next ){ 
+	res.status(404); 
+	res.render("404", {key : process.env.OPENWEATHERMAP_API_KEY, pass : pass });
+})
 module.exports = app
